@@ -1,0 +1,106 @@
+.education {
+  background: #000;
+  color: #fff;
+  padding: 120px 80px;
+}
+
+.education-inner { max-width: 1100px; margin: 0 auto; }
+
+.education-header {
+  margin-bottom: 80px;
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+    margin-bottom: 20px;
+  }
+
+  .headline {
+    font-size: clamp(40px, 5.5vw, 72px);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    color: #fff;
+  }
+}
+
+.education-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.edu-item {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 48px;
+  padding: 48px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+
+  &:first-child { border-top: 1px solid rgba(255,255,255,0.07); }
+
+  &:hover .edu-degree { color: rgba(255,255,255,0.7); }
+}
+
+.edu-period {
+  padding-top: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  .period-text {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: rgba(255,255,255,0.35);
+    letter-spacing: 0.03em;
+  }
+
+  .mode-badge {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(0,113,227,0.8);
+    background: rgba(0,113,227,0.1);
+    border: 1px solid rgba(0,113,227,0.2);
+    padding: 3px 10px;
+    border-radius: 20px;
+    width: fit-content;
+  }
+}
+
+.edu-main {
+  .edu-degree {
+    font-size: clamp(18px, 2vw, 24px);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: #fff;
+    margin-bottom: 8px;
+    transition: color 0.3s;
+  }
+
+  .edu-school {
+    font-size: 14px;
+    font-weight: 400;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 16px;
+    font-style: italic;
+  }
+
+  .edu-desc {
+    font-size: 15px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.35);
+    line-height: 1.7;
+    max-width: 580px;
+    letter-spacing: -0.01em;
+  }
+}
+
+@media (max-width: 768px) {
+  .education { padding: 80px 24px; }
+  .edu-item { grid-template-columns: 1fr; gap: 16px; }
+}

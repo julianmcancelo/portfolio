@@ -1,0 +1,43 @@
+<section id="projects" class="projects">
+  <div class="projects-inner">
+    <div class="projects-header reveal">
+      <p class="eyebrow">{{ i18n.t().projects.eyebrow }}</p>
+      <h2 class="headline">{{ i18n.t().projects.headline }}</h2>
+    </div>
+
+    <div class="projects-list">
+      <div
+        class="project-row reveal"
+        *ngFor="let p of i18n.t().projects.items; let i = index"
+        [style.transition-delay]="(i * 0.1) + 's'"
+      >
+        <div class="project-meta">
+          <span class="project-index">{{ p.index }}</span>
+          <span class="project-year">{{ p.year }}</span>
+        </div>
+
+        <div class="project-main">
+          <div class="project-top">
+            <h3 class="project-name">{{ p.name }}</h3>
+            <span class="project-status" [class]="p.statusClass">{{ p.status }}</span>
+          </div>
+          <p class="project-desc">{{ p.desc }}</p>
+          <div class="project-stack">
+            <span class="tag" *ngFor="let t of p.stack">{{ t }}</span>
+          </div>
+          <div class="project-links">
+            <a *ngIf="p.repo" [href]="p.repo" target="_blank" class="proj-link">
+              ↗ {{ i18n.t().projects.viewRepo }}
+            </a>
+            <a *ngIf="p.demo" [href]="p.demo" target="_blank" class="proj-link demo">
+              ⬡ {{ i18n.t().projects.viewDemo }}
+            </a>
+            <span *ngIf="!p.repo && !p.demo" class="proj-private">
+              ⊘ {{ i18n.t().projects.privateLabel }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

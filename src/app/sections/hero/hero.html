@@ -1,0 +1,22 @@
+<section id="hero" class="hero">
+  <div class="hero-bg">
+    <div class="noise"></div>
+    <div class="glow-1"></div>
+    <div class="glow-2"></div>
+  </div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">{{ i18n.t().hero.location }}</p>
+    <h1 class="hero-name">Julian<br>Cancelo<span class="dot">.</span></h1>
+    <p class="hero-role">
+      <span class="typed">{{ displayText }}</span><span class="cursor">|</span>
+    </p>
+    <p class="hero-desc" [innerHTML]="i18n.t().hero.desc.replace('\n', '<br>')"></p>
+    <div class="hero-actions">
+      <button class="btn-main" (click)="scrollTo('projects')">{{ i18n.t().hero.cta }}</button>
+      <button class="btn-ghost" (click)="scrollTo('contact')">{{ i18n.t().hero.ctaContact }}</button>
+    </div>
+  </div>
+  <div class="hero-scroll-hint" (click)="scrollTo('about')">
+    <div class="scroll-arrow"></div>
+  </div>
+</section>

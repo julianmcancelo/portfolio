@@ -1,0 +1,26 @@
+<section id="education" class="education">
+  <div class="education-inner">
+    <div class="education-header reveal">
+      <p class="eyebrow">{{ i18n.t().education.eyebrow }}</p>
+      <h2 class="headline">{{ i18n.t().education.headline }}</h2>
+    </div>
+
+    <div class="education-list">
+      <div
+        class="edu-item reveal"
+        *ngFor="let e of i18n.t().education.items; let i = index"
+        [style.transition-delay]="(i * 0.15) + 's'"
+      >
+        <div class="edu-period">
+          <span class="period-text">{{ e.period }}</span>
+          <span class="mode-badge">{{ e.mode }}</span>
+        </div>
+        <div class="edu-main">
+          <h3 class="edu-degree">{{ e.degree }}</h3>
+          <p class="edu-school">{{ e.school }}</p>
+          <p class="edu-desc">{{ e.desc }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

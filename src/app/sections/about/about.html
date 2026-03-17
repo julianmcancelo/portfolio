@@ -1,0 +1,32 @@
+<section id="about" class="about">
+  <div class="about-inner">
+    <div class="about-top reveal">
+      <p class="eyebrow">{{ i18n.t().about.eyebrow }}</p>
+      <h2 class="headline">
+        {{ i18n.t().about.headline1 }}<br>
+        <span class="muted">{{ i18n.t().about.headline2 }}</span>
+      </h2>
+    </div>
+    <div class="about-body">
+      <div class="about-text reveal reveal-delay-1">
+        <p [innerHTML]="i18n.t().about.p1"></p>
+        <p [innerHTML]="i18n.t().about.p2"></p>
+        <p [innerHTML]="i18n.t().about.p3"></p>
+        <div class="about-links">
+          <a href="assets/CV_Julian_Cancelo_EN.docx" download class="link-pill dark">
+            {{ i18n.t().about.downloadEn }}
+          </a>
+          <a href="assets/CV_Julian_Cancelo_ATS.docx" download class="link-pill outline">
+            {{ i18n.t().about.downloadEs }}
+          </a>
+        </div>
+      </div>
+      <div class="about-stats reveal reveal-delay-2">
+        <div class="stat" *ngFor="let s of i18n.t().about.stats">
+          <div class="stat-num">{{ s.number }}</div>
+          <div class="stat-label">{{ s.label }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

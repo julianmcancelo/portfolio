@@ -1,0 +1,47 @@
+<section id="contact" class="contact">
+  <div class="contact-inner">
+    <div class="contact-left reveal">
+      <p class="eyebrow">{{ i18n.t().contact.eyebrow }}</p>
+      <h2 class="headline">
+        {{ i18n.t().contact.headline1 }}<br>{{ i18n.t().contact.headline2 }}<span class="dot">.</span>
+      </h2>
+      <p class="sub">{{ i18n.t().contact.sub }}</p>
+      <div class="contact-links">
+        <a *ngFor="let l of links" [href]="l.href" target="_blank" class="contact-link">
+          <span class="link-icon">{{ l.icon }}</span>
+          <span>{{ l.label }}</span>
+          <span class="link-arrow">→</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="contact-form reveal reveal-delay-2">
+      <div class="form-group">
+        <label>{{ i18n.t().contact.labelName }}</label>
+        <input type="text" [(ngModel)]="form.name" [placeholder]="i18n.t().contact.placeholderName" [disabled]="status === 'sending'">
+      </div>
+      <div class="form-group">
+        <label>{{ i18n.t().contact.labelEmail }}</label>
+        <input type="email" [(ngModel)]="form.email" [placeholder]="i18n.t().contact.placeholderEmail" [disabled]="status === 'sending'">
+      </div>
+      <div class="form-group">
+        <label>{{ i18n.t().contact.labelMessage }}</label>
+        <textarea [(ngModel)]="form.message" [placeholder]="i18n.t().contact.placeholderMessage" rows="5" [disabled]="status === 'sending'"></textarea>
+      </div>
+
+      <div class="error-msg" *ngIf="status === 'error'">{{ i18n.t().contact.errorMsg }}</div>
+
+      <button
+        class="submit-btn"
+        (click)="send()"
+        [class.sending]="status === 'sending'"
+        [class.sent]="status === 'sent'"
+        [class.error]="status === 'error'"
+        [disabled]="status === 'sending'"
+      >
+        <span class="btn-spinner" *ngIf="status === 'sending'"></span>
+        {{ btnLabel }}
+      </button>
+    </div>
+  </div>
+</section>

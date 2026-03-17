@@ -1,0 +1,30 @@
+<nav [class.scrolled]="scrolled" [class.light]="lightBg">
+  <a class="logo" (click)="scrollTo('#hero')">JC</a>
+
+  <ul class="nav-links" [class.open]="menuOpen">
+    <li><a (click)="scrollTo('#about')">{{ i18n.t().nav.about }}</a></li>
+    <li><a (click)="scrollTo('#projects')">{{ i18n.t().nav.projects }}</a></li>
+    <li><a (click)="scrollTo('#skills')">{{ i18n.t().nav.skills }}</a></li>
+    <li><a (click)="scrollTo('#education')">{{ i18n.t().nav.education }}</a></li>
+    <li><a (click)="scrollTo('#contact')">{{ i18n.t().nav.contact }}</a></li>
+    <li>
+      <a href="assets/CV_Julian_Cancelo_EN.docx" download class="btn-cv">
+        {{ i18n.t().nav.downloadCv }}
+      </a>
+    </li>
+    <li>
+      <button class="lang-toggle" (click)="i18n.toggle()">
+        {{ i18n.lang() === 'es' ? 'EN' : 'ES' }}
+      </button>
+    </li>
+  </ul>
+
+  <div class="nav-right-mobile">
+    <button class="lang-toggle" (click)="i18n.toggle()">
+      {{ i18n.lang() === 'es' ? 'EN' : 'ES' }}
+    </button>
+    <button class="hamburger" (click)="menuOpen = !menuOpen" [class.open]="menuOpen">
+      <span></span><span></span>
+    </button>
+  </div>
+</nav>
