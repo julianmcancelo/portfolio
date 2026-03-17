@@ -23,7 +23,7 @@ const translations = {
       p3: `Looking for my first formal role. I bring real projects, a self-taught mindset, and the drive to keep growing fast in a professional environment.`,
       downloadEn: '↓ Download CV (EN)', downloadEs: '↓ Descargar CV (ES)',
       stats: [
-        { number: '4',  label: 'Real projects shipped' },
+        { number: '4',  label: 'Personal projects built' },
         { number: '2',  label: 'Degrees in progress' },
         { number: '3+', label: 'Years building software' },
       ],
@@ -125,7 +125,7 @@ const translations = {
       p3: `Busco mi primera experiencia laboral formal. Traigo proyectos reales, mentalidad autodidacta y muchas ganas de crecer rápido en un entorno profesional.`,
       downloadEn: '↓ Download CV (EN)', downloadEs: '↓ Descargar CV (ES)',
       stats: [
-        { number: '4',  label: 'Proyectos reales entregados' },
+        { number: '4',  label: 'Proyectos personales construidos' },
         { number: '2',  label: 'Carreras en curso' },
         { number: '3+', label: 'Años construyendo software' },
       ],
