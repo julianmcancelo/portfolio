@@ -9,6 +9,17 @@
 .about-top {
   margin-bottom: 80px;
 
+  .about-top-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 60px;
+  }
+
+  .about-top-text {
+    flex: 1;
+  }
+
   .eyebrow {
     font-family: var(--font-mono);
     font-size: 12px;
@@ -26,6 +37,23 @@
     color: #000;
 
     .muted { color: var(--gray-600); }
+  }
+}
+
+.about-photo {
+  flex-shrink: 0;
+
+  img {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.12);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+
+    &:hover {
+      transform: scale(1.04);
+    }
   }
 }
 
@@ -114,5 +142,11 @@
 
 @media (max-width: 900px) {
   .about { padding: 80px 24px; }
+  .about-top .about-top-content {
+    flex-direction: column-reverse;
+    gap: 32px;
+    text-align: center;
+  }
+  .about-photo img { width: 150px; height: 150px; }
   .about-body { grid-template-columns: 1fr; gap: 48px; }
 }
