@@ -34,25 +34,25 @@ const translations = {
       viewRepo: 'View repo', viewDemo: 'Live demo',
       items: [
         {
-          name: 'Bitácora Docente', status: 'Active', statusClass: 'active',
+          name: 'Bitácora Docente', status: 'In development', statusClass: 'dev',
           year: '2026', index: '01',
           desc: 'Cross-platform app for teachers. Centralizes attendance, grades, activities and calendar with real-time sync across Android, iOS and web.',
           stack: ['Flutter', 'Dart', 'Firebase', 'Firestore', 'Web Panel'],
           repo: null, demo: null,
         },
         {
-          name: 'Stock AR', status: 'Active', statusClass: 'active',
+          name: 'Stock AR', status: 'Closed beta', statusClass: 'dev',
           year: '2026', index: '02',
           desc: 'Inventory control app with integrated barcode scanner. Built for small businesses to digitize stock management — no server needed.',
           stack: ['Flutter', 'Dart', 'Google Sheets API', 'ZXing'],
           repo: null, demo: null,
         },
         {
-          name: 'Cartita Digital', status: 'In development', statusClass: 'dev',
+          name: 'Cartita Digital', status: 'Closed beta', statusClass: 'dev',
           year: '2025', index: '03',
           desc: 'SaaS platform for bars and restaurants. Multi-tenant architecture with real-time configurable digital menus per business.',
           stack: ['Svelte', 'SvelteKit', 'JavaScript', 'Tailwind CSS'],
-          repo: null, demo: null,
+          repo: null, demo: 'https://www.cartita.digital',
         },
         {
           name: 'E-Commerce + Virtual Card', status: 'Completed', statusClass: 'done',
@@ -136,25 +136,25 @@ const translations = {
       viewRepo: 'Ver repo', viewDemo: 'Ver demo',
       items: [
         {
-          name: 'Bitácora Docente', status: 'Activo', statusClass: 'active',
+          name: 'Bitácora Docente', status: 'En desarrollo', statusClass: 'dev',
           year: '2026', index: '01',
           desc: 'App multiplataforma para docentes. Centraliza asistencia, calificaciones, actividades y agenda con sincronización en tiempo real en Android, iOS y web.',
           stack: ['Flutter', 'Dart', 'Firebase', 'Firestore', 'Panel Web'],
           repo: null, demo: null,
         },
         {
-          name: 'Stock AR', status: 'Activo', statusClass: 'active',
+          name: 'Stock AR', status: 'Beta cerrada', statusClass: 'dev',
           year: '2026', index: '02',
           desc: 'App móvil de control de inventario con lector de código de barras. Para negocios que quieren digitalizar su stock sin infraestructura de servidor.',
           stack: ['Flutter', 'Dart', 'Google Sheets API', 'ZXing'],
           repo: null, demo: null,
         },
         {
-          name: 'Cartita Digital', status: 'En desarrollo', statusClass: 'dev',
+          name: 'Cartita Digital', status: 'Beta cerrada', statusClass: 'dev',
           year: '2025', index: '03',
           desc: 'Plataforma SaaS para bares y restaurantes. Arquitectura multitenancy con cartas de menú digitales configurables en tiempo real por negocio.',
           stack: ['Svelte', 'SvelteKit', 'JavaScript', 'Tailwind CSS'],
-          repo: null, demo: null,
+          repo: null, demo: 'https://www.cartita.digital',
         },
         {
           name: 'E-Commerce + Tarjeta Virtual', status: 'Completado', statusClass: 'done',

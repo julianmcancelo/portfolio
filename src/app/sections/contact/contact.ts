@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, inject } from '@angular/core';
+import { Component, inject, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
@@ -11,9 +11,10 @@ import { I18nService } from '../../i18n.service';
   templateUrl: './contact.html',
   styleUrl: './contact.scss'
 })
-export class ContactComponent implements AfterViewInit {
+export class ContactComponent {
   i18n  = inject(I18nService);
   http  = inject(HttpClient);
+  private observer?: IntersectionObserver;
 
   form    = { name: '', email: '', message: '' };
   status: 'idle' | 'sending' | 'sent' | 'error' = 'idle';
@@ -26,6 +27,13 @@ export class ContactComponent implements AfterViewInit {
     { icon: 'gh', label: 'github.com/julianmcancelo',     href: 'https://github.com/julianmcancelo' },
     { icon: '↗',  label: 'juliancancelo.com.ar',          href: 'https://juliancancelo.com.ar' },
   ];
+
+  constructor() {
+    effect(() => {
+      this.i18n.lang();
+      setTimeout(() => this.observeReveals(), 0);
+    });
+  }
 
   send() {
     if (this.status === 'sending') return;
@@ -53,11 +61,12 @@ export class ContactComponent implements AfterViewInit {
     return t.send;
   }
 
-  ngAfterViewInit() {
-    const obs = new IntersectionObserver(
+  private observeReveals() {
+    this.observer?.disconnect();
+    this.observer = new IntersectionObserver(
       entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
       { threshold: 0.1 }
     );
-    document.querySelectorAll('#contact .reveal').forEach(el => obs.observe(el));
+    document.querySelectorAll('#contact .reveal').forEach(el => this.observer!.observe(el));
   }
 }

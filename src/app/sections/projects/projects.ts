@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, inject } from '@angular/core';
+import { Component, inject, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { I18nService } from '../../i18n.service';
 
@@ -9,13 +9,22 @@ import { I18nService } from '../../i18n.service';
   templateUrl: './projects.html',
   styleUrl: './projects.scss'
 })
-export class ProjectsComponent implements AfterViewInit {
+export class ProjectsComponent {
   i18n = inject(I18nService);
+  private observer?: IntersectionObserver;
 
-  ngAfterViewInit() {
-    const observer = new IntersectionObserver((entries) => {
+  constructor() {
+    effect(() => {
+      this.i18n.lang();
+      setTimeout(() => this.observeReveals(), 0);
+    });
+  }
+
+  private observeReveals() {
+    this.observer?.disconnect();
+    this.observer = new IntersectionObserver((entries) => {
       entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
     }, { threshold: 0.1 });
-    document.querySelectorAll('#projects .reveal').forEach(el => observer.observe(el));
+    document.querySelectorAll('#projects .reveal').forEach(el => this.observer!.observe(el));
   }
 }

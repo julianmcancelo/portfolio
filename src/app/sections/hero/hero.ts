@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, inject, effect } from '@angular/core';
+import { Component, OnDestroy, inject, effect } from '@angular/core';
 import { I18nService } from '../../i18n.service';
 
 @Component({
@@ -7,47 +7,51 @@ import { I18nService } from '../../i18n.service';
   templateUrl: './hero.html',
   styleUrl: './hero.scss'
 })
-export class HeroComponent implements OnInit, OnDestroy {
+export class HeroComponent implements OnDestroy {
   i18n = inject(I18nService);
   displayText = '';
-  private interval: any;
+  private timeout: any;
   private charIndex = 0;
   private roleIndex = 0;
   private deleting = false;
+  private generation = 0; // prevents stale loops from running
 
   constructor() {
-    // Restart typewriter on language change
     effect(() => {
-      this.i18n.lang();
+      this.i18n.lang(); // track signal
+      // Reset state for new language
+      clearTimeout(this.timeout);
       this.charIndex = 0;
       this.roleIndex = 0;
       this.deleting = false;
       this.displayText = '';
-      clearTimeout(this.interval);
-      this.typeLoop();
+      this.generation++;
+      this.typeLoop(this.generation);
     });
   }
 
-  ngOnInit() {}
+  ngOnDestroy() { clearTimeout(this.timeout); }
 
-  ngOnDestroy() { clearTimeout(this.interval); }
+  private typeLoop(gen: number) {
+    // Stop if a newer loop was started
+    if (gen !== this.generation) return;
 
-  typeLoop() {
     const roles = this.i18n.t().hero.roles;
     const current = roles[this.roleIndex];
+
     if (!this.deleting && this.charIndex <= current.length) {
       this.displayText = current.substring(0, this.charIndex++);
-      this.interval = setTimeout(() => this.typeLoop(), 60);
+      this.timeout = setTimeout(() => this.typeLoop(gen), 60);
     } else if (!this.deleting && this.charIndex > current.length) {
-      this.interval = setTimeout(() => { this.deleting = true; this.typeLoop(); }, 2200);
+      this.timeout = setTimeout(() => { this.deleting = true; this.typeLoop(gen); }, 2200);
     } else if (this.deleting && this.charIndex >= 0) {
       this.displayText = current.substring(0, this.charIndex--);
-      this.interval = setTimeout(() => this.typeLoop(), 35);
+      this.timeout = setTimeout(() => this.typeLoop(gen), 35);
     } else {
       this.deleting = false;
       this.roleIndex = (this.roleIndex + 1) % roles.length;
       this.charIndex = 0;
-      this.interval = setTimeout(() => this.typeLoop(), 300);
+      this.timeout = setTimeout(() => this.typeLoop(gen), 300);
     }
   }
 
