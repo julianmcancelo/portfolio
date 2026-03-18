@@ -4,8 +4,7 @@ import {
   output,
   signal,
   computed,
-  OnChanges,
-  SimpleChanges,
+  effect,
   inject,
 } from '@angular/core';
 import { CommonModule, DOCUMENT } from '@angular/common';
@@ -27,11 +26,11 @@ export interface DemoConfig {
   templateUrl: './demo-modal.html',
   styleUrl: './demo-modal.scss',
 })
-export class DemoModalComponent implements OnChanges {
+export class DemoModalComponent {
   private doc       = inject(DOCUMENT);
   private sanitizer = inject(DomSanitizer);
 
-  /** Configuración de la demo a mostrar */
+  /** Configuración de la demo a mostrar (null = modal cerrado) */
   config = input<DemoConfig | null>(null);
 
   /** Emite cuando el usuario cierra el modal */
@@ -55,18 +54,19 @@ export class DemoModalComponent implements OnChanges {
     return this.sanitizer.bypassSecurityTrustResourceUrl(url);
   });
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['config']) {
-      if (this.config()) {
-        // Pequeño delay para que el CSS de entrada se dispare
+  constructor() {
+    // Reaccionar a cambios del input usando effect() (API signals de Angular 17+)
+    effect(() => {
+      const cfg = this.config();
+      if (cfg) {
+        // Delay mínimo para que el CSS de entrada se dispare correctamente
         setTimeout(() => this.visible.set(true), 10);
-        // Bloquear scroll del body mientras el modal está abierto
         this.doc.body.style.overflow = 'hidden';
       } else {
         this.visible.set(false);
         this.doc.body.style.overflow = '';
       }
-    }
+    });
   }
 
   /** Cierra con animación de salida */

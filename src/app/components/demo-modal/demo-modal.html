@@ -1,5 +1,6 @@
-<!-- Overlay oscuro del modal -->
+<!-- Overlay oscuro del modal — solo existe en el DOM cuando hay una demo activa -->
 <div
+  *ngIf="config()"
   class="modal-overlay"
   [class.visible]="visible()"
   (click)="onOverlayClick($event)"

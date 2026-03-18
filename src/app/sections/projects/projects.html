@@ -30,7 +30,7 @@
             <a *ngIf="p.repo" [href]="p.repo" target="_blank" class="proj-link">
               ↗ {{ i18n.t().projects.viewRepo }}
             </a>
-            <a *ngIf="p.demo && !p.youtubeId" [href]="p.demo" target="_blank" class="proj-link demo">
+            <a *ngIf="p.demo" [href]="p.demo" target="_blank" class="proj-link demo">
               ⬡ {{ i18n.t().projects.viewDemo }}
             </a>
             <!-- Botón de demo en vivo (abre el modal) -->

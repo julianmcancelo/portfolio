@@ -13,7 +13,8 @@ export class SecurityService {
     this.bloquearMenuContextual();
     this.bloquearAtajosTeclado();
     this.bloquearSeleccionTextoProtegido();
-    this.detectarDevTools();
+    // Nota: detección de DevTools deshabilitada para evitar falsos positivos
+    // en entornos de preview y navegadores con paneles laterales abiertos.
   }
 
   /** Deshabilita el menú contextual (click derecho) en toda la página */
@@ -81,12 +82,13 @@ export class SecurityService {
    * Si se detecta, muestra un overlay de advertencia.
    */
   private detectarDevTools(): void {
-    const UMBRAL = 160; // píxeles de diferencia que sugieren que DevTools está abierto
+    const UMBRAL = 200; // píxeles de diferencia que sugieren que DevTools está abierto
     let devToolsAbiertos = false;
 
     const verificar = () => {
+      // Requiere que AMBAS dimensiones superen el umbral para evitar falsos positivos
       const diff =
-        window.outerWidth - window.innerWidth > UMBRAL ||
+        window.outerWidth - window.innerWidth > UMBRAL &&
         window.outerHeight - window.innerHeight > UMBRAL;
 
       if (diff && !devToolsAbiertos) {

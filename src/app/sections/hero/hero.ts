@@ -4,6 +4,7 @@ import {
   OnInit,
   HostListener,
   ElementRef,
+  NgZone,
   inject,
   effect,
   signal,
@@ -21,10 +22,11 @@ import { MagneticDirective } from '../../directives/magnetic.directive';
 })
 export class HeroComponent implements OnInit, OnDestroy {
   i18n = inject(I18nService);
-  private el = inject(ElementRef);
+  private el   = inject(ElementRef);
+  private zone = inject(NgZone);
 
-  // Texto del typewriter
-  displayText = '';
+  // Texto del typewriter como signal para evitar NG0100
+  displayText = signal('');
 
   // Letras del nombre animadas individualmente
   nombreLetras = signal<{ char: string; visible: boolean }[]>([]);
@@ -51,7 +53,7 @@ export class HeroComponent implements OnInit, OnDestroy {
       this.charIndex = 0;
       this.roleIndex = 0;
       this.deleting = false;
-      this.displayText = '';
+      this.displayText.set('');
       this.generation++;
       this.typeLoop(this.generation);
     });
@@ -101,22 +103,29 @@ export class HeroComponent implements OnInit, OnDestroy {
     const roles = this.i18n.t().hero.roles;
     const current = roles[this.roleIndex];
 
+    // Ejecutar los setTimeout FUERA de la zona de Angular para evitar NG0100
+    // y solo actualizar el signal (que re-entra a la zona) cuando cambia el texto
     if (!this.deleting && this.charIndex <= current.length) {
-      this.displayText = current.substring(0, this.charIndex++);
-      this.timeout = setTimeout(() => this.typeLoop(gen), 60);
+      this.zone.run(() => this.displayText.set(current.substring(0, this.charIndex++)));
+      this.zone.runOutsideAngular(() => {
+        this.timeout = setTimeout(() => this.typeLoop(gen), 60);
+      });
     } else if (!this.deleting && this.charIndex > current.length) {
-      this.timeout = setTimeout(() => {
-        this.deleting = true;
-        this.typeLoop(gen);
-      }, 2200);
+      this.zone.runOutsideAngular(() => {
+        this.timeout = setTimeout(() => { this.deleting = true; this.typeLoop(gen); }, 2200);
+      });
     } else if (this.deleting && this.charIndex >= 0) {
-      this.displayText = current.substring(0, this.charIndex--);
-      this.timeout = setTimeout(() => this.typeLoop(gen), 35);
+      this.zone.run(() => this.displayText.set(current.substring(0, this.charIndex--)));
+      this.zone.runOutsideAngular(() => {
+        this.timeout = setTimeout(() => this.typeLoop(gen), 35);
+      });
     } else {
       this.deleting = false;
       this.roleIndex = (this.roleIndex + 1) % roles.length;
       this.charIndex = 0;
-      this.timeout = setTimeout(() => this.typeLoop(gen), 300);
+      this.zone.runOutsideAngular(() => {
+        this.timeout = setTimeout(() => this.typeLoop(gen), 300);
+      });
     }
   }
 }
