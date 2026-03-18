@@ -31,7 +31,7 @@ const translations = {
     projects: {
       eyebrow: 'Projects', headline: "What I've built.",
       privateLabel: 'Private repo',
-      viewRepo: 'View repo', viewDemo: 'Live demo',
+      viewRepo: 'View repo', viewDemo: 'Live demo', verDemo: 'Live demo',
       items: [
         {
           name: 'Bitácora Docente', status: 'In development', statusClass: 'dev',
@@ -39,6 +39,7 @@ const translations = {
           desc: 'Cross-platform app for teachers. Centralizes attendance, grades, activities and calendar with real-time sync across Android, iOS and web.',
           stack: ['Flutter', 'Dart', 'Firebase', 'Firestore', 'Web Panel'],
           repo: null, demo: null,
+          demoType: 'mobile' as const, youtubeId: '',
         },
         {
           name: 'Stock AR', status: 'Closed beta', statusClass: 'dev',
@@ -46,6 +47,7 @@ const translations = {
           desc: 'Inventory control app with integrated barcode scanner. Built for small businesses to digitize stock management — no server needed.',
           stack: ['Flutter', 'Dart', 'Google Sheets API', 'ZXing'],
           repo: null, demo: null,
+          demoType: 'mobile' as const, youtubeId: '',
         },
         {
           name: 'Cartita Digital', status: 'Closed beta', statusClass: 'dev',
@@ -53,6 +55,7 @@ const translations = {
           desc: 'SaaS platform for bars and restaurants. Multi-tenant architecture with real-time configurable digital menus per business.',
           stack: ['Svelte', 'SvelteKit', 'JavaScript', 'Tailwind CSS'],
           repo: null, demo: 'https://www.cartita.digital',
+          demoType: 'web' as const, youtubeId: '',
         },
         {
           name: 'E-Commerce + Virtual Card', status: 'Completed', statusClass: 'done',
@@ -60,6 +63,7 @@ const translations = {
           desc: 'Full e-commerce platform with virtual card balance system, shopping cart, admin panel and complete product CRUD.',
           stack: ['Angular', 'TypeScript', 'PHP', 'MySQL', 'Tailwind CSS'],
           repo: null, demo: null,
+          demoType: 'video' as const, youtubeId: '',
         },
       ],
     },
@@ -133,7 +137,7 @@ const translations = {
     projects: {
       eyebrow: 'Proyectos', headline: 'Lo que construí.',
       privateLabel: 'Repo privado',
-      viewRepo: 'Ver repo', viewDemo: 'Ver demo',
+      viewRepo: 'Ver repo', viewDemo: 'Ver demo', verDemo: 'Ver demo',
       items: [
         {
           name: 'Bitácora Docente', status: 'En desarrollo', statusClass: 'dev',
@@ -141,6 +145,7 @@ const translations = {
           desc: 'App multiplataforma para docentes. Centraliza asistencia, calificaciones, actividades y agenda con sincronización en tiempo real en Android, iOS y web.',
           stack: ['Flutter', 'Dart', 'Firebase', 'Firestore', 'Panel Web'],
           repo: null, demo: null,
+          demoType: 'mobile' as const, youtubeId: '',
         },
         {
           name: 'Stock AR', status: 'Beta cerrada', statusClass: 'dev',
@@ -148,6 +153,7 @@ const translations = {
           desc: 'App móvil de control de inventario con lector de código de barras. Para negocios que quieren digitalizar su stock sin infraestructura de servidor.',
           stack: ['Flutter', 'Dart', 'Google Sheets API', 'ZXing'],
           repo: null, demo: null,
+          demoType: 'mobile' as const, youtubeId: '',
         },
         {
           name: 'Cartita Digital', status: 'Beta cerrada', statusClass: 'dev',
@@ -155,6 +161,7 @@ const translations = {
           desc: 'Plataforma SaaS para bares y restaurantes. Arquitectura multitenancy con cartas de menú digitales configurables en tiempo real por negocio.',
           stack: ['Svelte', 'SvelteKit', 'JavaScript', 'Tailwind CSS'],
           repo: null, demo: 'https://www.cartita.digital',
+          demoType: 'web' as const, youtubeId: '',
         },
         {
           name: 'E-Commerce + Tarjeta Virtual', status: 'Completado', statusClass: 'done',
@@ -162,6 +169,7 @@ const translations = {
           desc: 'Plataforma de e-commerce con sistema de tarjeta virtual, carrito de compras, panel de administración y CRUD completo de productos.',
           stack: ['Angular', 'TypeScript', 'PHP', 'MySQL', 'Tailwind CSS'],
           repo: null, demo: null,
+          demoType: 'video' as const, youtubeId: '',
         },
       ],
     },

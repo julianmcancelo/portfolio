@@ -1,0 +1,333 @@
+/* ── Overlay ── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+
+  /* Animación de entrada/salida del overlay */
+  opacity: 0;
+  transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+
+  &.visible { opacity: 1; }
+}
+
+/* ── Shared: animación de entrada de los mockups ── */
+%mockup-base {
+  opacity: 0;
+  transform: scale(0.92) translateY(24px);
+  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+
+  &.visible {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* ────────────────────────────────────────
+   MOCKUP BROWSER
+──────────────────────────────────────── */
+.mockup-browser {
+  @extend %mockup-base;
+  width: min(1100px, 92vw);
+  height: min(680px, 85vh);
+  background: #1a1a1a;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.08),
+    0 40px 100px rgba(0,0,0,0.6),
+    0 0 60px rgba(0,113,227,0.08);
+  display: flex;
+  flex-direction: column;
+}
+
+.browser-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 16px;
+  height: 44px;
+  background: #2a2a2a;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  flex-shrink: 0;
+  user-select: none;
+}
+
+.browser-dots {
+  display: flex;
+  gap: 7px;
+
+  .dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: filter 0.2s;
+
+    &:hover { filter: brightness(1.3); }
+
+    &.rojo    { background: #ff5f57; }
+    &.amarillo { background: #febc2e; }
+    &.verde   { background: #28c840; }
+  }
+}
+
+.browser-url {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 6px;
+  padding: 5px 12px;
+  max-width: 480px;
+  margin: 0 auto;
+
+  .url-icono { font-size: 11px; opacity: 0.5; }
+
+  .url-texto {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: rgba(255,255,255,0.5);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.browser-close {
+  margin-left: auto;
+  background: transparent;
+  border: none;
+  color: rgba(255,255,255,0.35);
+  font-size: 16px;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: color 0.2s, background 0.2s;
+  line-height: 1;
+
+  &:hover {
+    color: #fff;
+    background: rgba(255,255,255,0.1);
+  }
+}
+
+.browser-content {
+  flex: 1;
+  overflow: hidden;
+  background: #fff;
+
+  iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: block;
+  }
+}
+
+/* ────────────────────────────────────────
+   MOCKUP TELÉFONO
+──────────────────────────────────────── */
+.mockup-phone {
+  @extend %mockup-base;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  position: relative;
+}
+
+.phone-frame {
+  width: 280px;
+  background: #111;
+  border-radius: 44px;
+  padding: 16px 12px 24px;
+  box-shadow:
+    0 0 0 2px rgba(255,255,255,0.12),
+    0 0 0 6px #1a1a1a,
+    0 0 0 7px rgba(255,255,255,0.06),
+    0 40px 80px rgba(0,0,0,0.7),
+    inset 0 0 0 1px rgba(255,255,255,0.05);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.phone-notch {
+  width: 100px;
+  height: 30px;
+  background: #000;
+  border-radius: 0 0 20px 20px;
+  position: relative;
+  flex-shrink: 0;
+
+  /* "Cámara" dinámica (Dynamic Island style) */
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90px;
+    height: 20px;
+    background: #0a0a0a;
+    border-radius: 12px;
+  }
+}
+
+.phone-screen {
+  width: 100%;
+  aspect-ratio: 9/19;
+  background: #000;
+  border-radius: 12px;
+  overflow: hidden;
+
+  iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: block;
+  }
+}
+
+.phone-home-bar {
+  width: 100px;
+  height: 4px;
+  background: rgba(255,255,255,0.3);
+  border-radius: 4px;
+}
+
+.phone-label {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: rgba(255,255,255,0.4);
+  letter-spacing: 0.08em;
+}
+
+/* Botón cerrar flotante para el mockup de teléfono */
+.float-close {
+  position: absolute;
+  top: -12px;
+  right: -12px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.15);
+  color: rgba(255,255,255,0.7);
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+
+  &:hover {
+    background: rgba(255,255,255,0.2);
+    color: #fff;
+    transform: scale(1.1);
+  }
+}
+
+/* ────────────────────────────────────────
+   MOCKUP VIDEO (YouTube fullscreen style)
+──────────────────────────────────────── */
+.mockup-video {
+  @extend %mockup-base;
+  width: min(960px, 92vw);
+  background: #000;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.08),
+    0 40px 100px rgba(0,0,0,0.7);
+  display: flex;
+  flex-direction: column;
+}
+
+.video-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+  background: #111;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  flex-shrink: 0;
+
+  .video-titulo {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: rgba(255,255,255,0.45);
+    letter-spacing: 0.06em;
+  }
+}
+
+.video-content {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16/9;
+  background: #000;
+
+  iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: block;
+  }
+}
+
+/* ── Placeholder cuando no hay video configurado ── */
+.phone-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: #0a0a0a;
+
+  .placeholder-icon {
+    font-size: 32px;
+    opacity: 0.3;
+  }
+
+  .placeholder-text {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: rgba(255,255,255,0.25);
+    letter-spacing: 0.08em;
+  }
+}
+
+/* ── Responsivo ── */
+@media (max-width: 600px) {
+  .mockup-browser {
+    width: 100%;
+    height: 75vh;
+    border-radius: 8px;
+  }
+
+  .phone-frame {
+    width: 220px;
+    border-radius: 36px;
+  }
+
+  .mockup-video {
+    width: 100%;
+    border-radius: 8px;
+  }
+}

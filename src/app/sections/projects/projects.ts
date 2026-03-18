@@ -1,18 +1,32 @@
-import { Component, inject, effect, AfterViewInit, OnDestroy, ElementRef } from '@angular/core';
+import {
+  Component,
+  inject,
+  effect,
+  AfterViewInit,
+  OnDestroy,
+  ElementRef,
+  signal,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { I18nService } from '../../i18n.service';
+import { DemoModalComponent, DemoConfig } from '../../components/demo-modal/demo-modal';
 
 @Component({
   selector: 'app-projects',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, DemoModalComponent],
   templateUrl: './projects.html',
   styleUrl: './projects.scss',
 })
 export class ProjectsComponent implements AfterViewInit, OnDestroy {
-  i18n = inject(I18nService);
-  private elRef = inject(ElementRef);
+  i18n    = inject(I18nService);
+  private sanitizer = inject(DomSanitizer);
+  private elRef     = inject(ElementRef);
   private observer?: IntersectionObserver;
+
+  /** Demo actualmente abierta (null = modal cerrado) */
+  demoActiva = signal<DemoConfig | null>(null);
 
   constructor() {
     effect(() => {
@@ -27,6 +41,26 @@ export class ProjectsComponent implements AfterViewInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.observer?.disconnect();
+  }
+
+  /** Abre el modal de demo para el proyecto seleccionado */
+  abrirDemo(p: any): void {
+    this.demoActiva.set({
+      tipo: p.demoType,
+      url: p.demo ?? undefined,
+      youtubeId: p.youtubeId ?? undefined,
+      nombre: p.name,
+    });
+  }
+
+  /** Cierra el modal */
+  cerrarDemo(): void {
+    this.demoActiva.set(null);
+  }
+
+  /** Sanitiza la URL del iframe para evitar advertencias de Angular */
+  sanitizarUrl(url: string): SafeResourceUrl {
+    return this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
 
   private observeReveals(): void {
@@ -53,13 +87,8 @@ export class ProjectsComponent implements AfterViewInit, OnDestroy {
         const rect = fila.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
-
-        const centroX = rect.width / 2;
-        const centroY = rect.height / 2;
-
-        const rotateX = ((y - centroY) / centroY) * -4; // máx 4°
-        const rotateY = ((x - centroX) / centroX) * 4;  // máx 4°
-
+        const rotateX = ((y - rect.height / 2) / (rect.height / 2)) * -4;
+        const rotateY = ((x - rect.width / 2) / (rect.width / 2)) * 4;
         fila.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.01)`;
         fila.style.transition = 'transform 0.1s ease';
       });

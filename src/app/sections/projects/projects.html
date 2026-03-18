@@ -1,5 +1,6 @@
 <section id="projects" class="projects">
   <div class="projects-inner">
+
     <div class="projects-header reveal">
       <p class="eyebrow">{{ i18n.t().projects.eyebrow }}</p>
       <h2 class="headline">{{ i18n.t().projects.headline }}</h2>
@@ -29,15 +30,31 @@
             <a *ngIf="p.repo" [href]="p.repo" target="_blank" class="proj-link">
               ↗ {{ i18n.t().projects.viewRepo }}
             </a>
-            <a *ngIf="p.demo" [href]="p.demo" target="_blank" class="proj-link demo">
+            <a *ngIf="p.demo && !p.youtubeId" [href]="p.demo" target="_blank" class="proj-link demo">
               ⬡ {{ i18n.t().projects.viewDemo }}
             </a>
-            <span *ngIf="!p.repo && !p.demo" class="proj-private">
+            <!-- Botón de demo en vivo (abre el modal) -->
+            <button
+              *ngIf="p.demoType"
+              class="btn-demo"
+              (click)="abrirDemo(p)"
+            >
+              <span class="btn-demo-icon">▶</span>
+              {{ i18n.t().projects.verDemo }}
+            </button>
+            <span *ngIf="!p.repo && !p.demo && !p.demoType" class="proj-private">
               ⊘ {{ i18n.t().projects.privateLabel }}
             </span>
           </div>
         </div>
       </div>
     </div>
+
   </div>
 </section>
+
+<!-- Modal de demo en vivo -->
+<app-demo-modal
+  [config]="demoActiva()"
+  (cerrar)="cerrarDemo()"
+></app-demo-modal>

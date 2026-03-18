@@ -1,0 +1,102 @@
+<!-- Overlay oscuro del modal -->
+<div
+  class="modal-overlay"
+  [class.visible]="visible()"
+  (click)="onOverlayClick($event)"
+>
+
+  <!-- ── MOCKUP BROWSER (para proyectos web con iframe) ── -->
+  <div
+    *ngIf="config()?.tipo === 'web'"
+    class="mockup-browser"
+    [class.visible]="visible()"
+  >
+    <!-- Barra del browser -->
+    <div class="browser-bar">
+      <div class="browser-dots">
+        <span class="dot rojo"   (click)="onCerrar()"></span>
+        <span class="dot amarillo"></span>
+        <span class="dot verde"></span>
+      </div>
+      <div class="browser-url">
+        <span class="url-icono">🔒</span>
+        <span class="url-texto">{{ config()?.url }}</span>
+      </div>
+      <button class="browser-close" (click)="onCerrar()">✕</button>
+    </div>
+
+    <!-- Contenido: iframe del sitio en vivo -->
+    <div class="browser-content">
+      <iframe
+        *ngIf="webUrl()"
+        [src]="webUrl()!"
+        frameborder="0"
+        loading="lazy"
+        allow="fullscreen"
+        title="Demo en vivo de {{ config()?.nombre }}"
+      ></iframe>
+    </div>
+  </div>
+
+  <!-- ── MOCKUP TELÉFONO (para apps mobile con YouTube) ── -->
+  <div
+    *ngIf="config()?.tipo === 'mobile'"
+    class="mockup-phone"
+    [class.visible]="visible()"
+  >
+    <!-- Marco del teléfono -->
+    <div class="phone-frame">
+      <div class="phone-notch"></div>
+      <div class="phone-screen">
+        <iframe
+          *ngIf="youtubeUrl()"
+          [src]="youtubeUrl()!"
+          frameborder="0"
+          allow="autoplay; fullscreen"
+          title="Demo de {{ config()?.nombre }}"
+        ></iframe>
+        <!-- Placeholder si no hay YouTube ID todavía -->
+        <div *ngIf="!youtubeUrl()" class="phone-placeholder">
+          <p class="placeholder-icon">▶</p>
+          <p class="placeholder-text">Demo próximamente</p>
+        </div>
+      </div>
+      <div class="phone-home-bar"></div>
+    </div>
+
+    <!-- Nombre del proyecto debajo del teléfono -->
+    <p class="phone-label">{{ config()?.nombre }}</p>
+
+    <!-- Botón cerrar flotante -->
+    <button class="float-close" (click)="onCerrar()">✕</button>
+  </div>
+
+  <!-- ── MOCKUP VIDEO (para proyectos web sin URL pública, demo en YouTube) ── -->
+  <div
+    *ngIf="config()?.tipo === 'video'"
+    class="mockup-video"
+    [class.visible]="visible()"
+  >
+    <!-- Barra del "player" -->
+    <div class="video-bar">
+      <span class="video-titulo">{{ config()?.nombre }} — Demo</span>
+      <button class="browser-close" (click)="onCerrar()">✕</button>
+    </div>
+
+    <div class="video-content">
+      <iframe
+        *ngIf="youtubeUrl()"
+        [src]="youtubeUrl()!"
+        frameborder="0"
+        allow="autoplay; fullscreen; accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen
+        title="Demo de {{ config()?.nombre }}"
+      ></iframe>
+      <div *ngIf="!youtubeUrl()" class="phone-placeholder">
+        <p class="placeholder-icon">▶</p>
+        <p class="placeholder-text">Demo próximamente</p>
+      </div>
+    </div>
+  </div>
+
+</div>
