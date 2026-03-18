@@ -41,10 +41,10 @@
     ></p>
 
     <div class="hero-actions">
-      <button class="btn-main" appMagnetic (click)="scrollTo('projects')">
+      <button class="btn-main" [appMagnetic]="0.3" (click)="scrollTo('projects')">
         {{ i18n.t().hero.cta }}
       </button>
-      <button class="btn-ghost" appMagnetic (click)="scrollTo('contact')">
+      <button class="btn-ghost" [appMagnetic]="0.3" (click)="scrollTo('contact')">
         {{ i18n.t().hero.ctaContact }}
       </button>
     </div>
