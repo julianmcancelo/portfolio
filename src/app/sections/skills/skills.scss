@@ -38,9 +38,12 @@
   padding: 32px 28px;
   border-right: 1px solid rgba(0,0,0,0.08);
   border-bottom: 1px solid rgba(0,0,0,0.08);
-  transition: background 0.2s;
+  transition: background 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 
-  &:hover { background: var(--gray-100); }
+  &:hover {
+    background: var(--gray-100);
+    transform: translateY(-2px);
+  }
 
   .group-label {
     font-family: var(--font-mono);
@@ -57,6 +60,7 @@
     gap: 8px;
   }
 
+  /* Animación de entrada escalonada en los pills */
   .pill {
     font-size: 13px;
     font-weight: 400;
@@ -66,13 +70,28 @@
     padding: 4px 12px;
     border-radius: 4px;
     letter-spacing: -0.01em;
-    transition: all 0.15s;
-  }
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    cursor: default;
 
-  &:hover .pill {
-    background: #fff;
-    border-color: rgba(0,0,0,0.12);
-    color: #000;
+    /* Estado inicial para stagger (se activa al hacer scroll) */
+    &[data-stagger] {
+      opacity: 0;
+      transform: translateY(8px) scale(0.95);
+    }
+
+    &.stagger-visible {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    &:hover {
+      background: #fff;
+      border-color: rgba(0,113,227,0.3);
+      color: #0071e3;
+      /* Glow azul sutil */
+      box-shadow: 0 0 12px rgba(0,113,227,0.12);
+      transform: translateY(-1px) scale(1.03);
+    }
   }
 }
 

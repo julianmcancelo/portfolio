@@ -9,6 +9,8 @@ import { SkillsComponent }    from './sections/skills/skills';
 import { EducationComponent } from './sections/education/education';
 import { ContactComponent }   from './sections/contact/contact';
 import { I18nService }        from './i18n.service';
+import { SecurityService }    from './services/security.service';
+import { ScrollAnimationService } from './services/scroll-animation.service';
 
 @Component({
   selector: 'app-root',
@@ -21,12 +23,16 @@ import { I18nService }        from './i18n.service';
     EducationComponent, ContactComponent,
   ],
   template: `
-    <!-- Scroll progress bar -->
-    <div class="scroll-progress" [style.width.%]="scrollProgress()"></div>
+    <!-- Barra de progreso con gradiente aurora animado -->
+    <div
+      class="scroll-progress"
+      [style.width.%]="scrollProgress()"
+      [class.oculta]="scrollProgress() === 0"
+    ></div>
 
     <app-navbar></app-navbar>
 
-    <!-- Lang transition overlay -->
+    <!-- Overlay de transición de idioma -->
     <div class="lang-fade" [class.active]="langFading"></div>
 
     <main [class.fading]="langFading">
@@ -37,17 +43,48 @@ import { I18nService }        from './i18n.service';
       <app-education></app-education>
       <app-contact></app-contact>
     </main>
+
     <app-footer></app-footer>
   `,
   styles: [`
+    /* Barra de progreso con degradado aurora */
     .scroll-progress {
       position: fixed;
       top: 0; left: 0;
       height: 2px;
-      background: linear-gradient(90deg, #0071e3, #2997ff);
+      background: linear-gradient(
+        90deg,
+        #0071e3,
+        #2997ff,
+        #9333ea,
+        #ec4899,
+        #2997ff
+      );
+      background-size: 200% 100%;
+      animation: aurora-barra 3s linear infinite;
       z-index: 2000;
       transition: width 0.1s linear;
       pointer-events: none;
+
+      /* Glow debajo de la barra */
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: -2px; left: 0; right: 0;
+        height: 4px;
+        background: inherit;
+        filter: blur(4px);
+        opacity: 0.6;
+      }
+    }
+
+    .scroll-progress.oculta {
+      opacity: 0;
+    }
+
+    @keyframes aurora-barra {
+      0%   { background-position: 0% 0; }
+      100% { background-position: 200% 0; }
     }
 
     main {
@@ -66,28 +103,42 @@ import { I18nService }        from './i18n.service';
       z-index: 500;
       transition: opacity 0.18s ease;
     }
+
     .lang-fade.active { opacity: 0.15; }
   `]
 })
 export class AppComponent implements OnInit {
-  i18n = inject(I18nService);
+  private i18n     = inject(I18nService);
+  private seguridad   = inject(SecurityService);
+  private scrollAnim  = inject(ScrollAnimationService);
+
   scrollProgress = signal(0);
   langFading = false;
   private prevLang = this.i18n.lang();
 
-  ngOnInit() {
-    // Watch lang changes and animate fade
+  ngOnInit(): void {
+    // Inicializar protecciones de seguridad
+    this.seguridad.inicializar();
+
+    // Inicializar servicio de animaciones de scroll
+    this.scrollAnim.inicializar();
+
+    // Observar cambios de idioma y animar transición
     setInterval(() => {
       if (this.i18n.lang() !== this.prevLang) {
         this.prevLang = this.i18n.lang();
         this.langFading = true;
-        setTimeout(() => this.langFading = false, 220);
+        setTimeout(() => {
+          this.langFading = false;
+          // Re-observar elementos tras cambio de idioma
+          this.scrollAnim.reobservar();
+        }, 220);
       }
     }, 50);
   }
 
   @HostListener('window:scroll')
-  onScroll() {
+  onScroll(): void {
     const scrollTop = window.scrollY;
     const docHeight = document.documentElement.scrollHeight - window.innerHeight;
     this.scrollProgress.set(docHeight > 0 ? (scrollTop / docHeight) * 100 : 0);

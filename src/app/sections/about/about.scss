@@ -42,19 +42,55 @@
 
 .about-photo {
   flex-shrink: 0;
+  position: relative;
+
+  /* Borde animado con gradiente rotando — conic-gradient */
+  &::before {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: 50%;
+    background: conic-gradient(
+      from 0deg,
+      #0071e3,
+      #2997ff,
+      #9333ea,
+      #ec4899,
+      #0071e3
+    );
+    animation: girar-borde 4s linear infinite;
+    z-index: 0;
+  }
+
+  /* Capa blanca que cubre el centro del borde para efecto "ring" */
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 2px;
+    border-radius: 50%;
+    background: var(--gray-100);
+    z-index: 1;
+  }
 
   img {
+    position: relative;
+    z-index: 2;
     width: 200px;
     height: 200px;
     border-radius: 50%;
     object-fit: cover;
-    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.12);
-    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                filter 0.4s ease;
 
     &:hover {
       transform: scale(1.04);
+      filter: brightness(1.05);
     }
   }
+}
+
+@keyframes girar-borde {
+  to { transform: rotate(360deg); }
 }
 
 .about-body {
@@ -119,8 +155,24 @@
   .stat {
     padding: 32px 0;
     border-bottom: 1px solid rgba(0,0,0,0.08);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                padding-left 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    cursor: default;
 
     &:first-child { border-top: 1px solid rgba(0,0,0,0.08); }
+
+    /* Lift + indent al hover */
+    &:hover {
+      transform: translateY(-2px);
+      padding-left: 8px;
+
+      .stat-num {
+        background: linear-gradient(90deg, #0071e3, #9333ea);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+    }
 
     .stat-num {
       font-size: 56px;
@@ -129,6 +181,7 @@
       color: #000;
       line-height: 1;
       margin-bottom: 8px;
+      transition: color 0.3s ease;
     }
 
     .stat-label {

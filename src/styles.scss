@@ -16,8 +16,13 @@
   --gray-900: #111111;
   --accent: #0071e3;
   --accent-light: #2997ff;
+  --accent-purple: #9333ea;
+  --accent-pink: #ec4899;
   --font-display: 'Figtree', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-mono: 'DM Mono', monospace;
+
+  /* Curva de animación estilo Apple / spring */
+  --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 html {
@@ -35,14 +40,64 @@ body {
 
 ::-webkit-scrollbar { width: 0; }
 
+/* ── Clases de animación de scroll ── */
 .reveal {
   opacity: 0;
   transform: translateY(40px);
-  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: opacity 0.9s var(--ease-spring),
+              transform 0.9s var(--ease-spring);
+  will-change: opacity, transform;
 }
-.reveal.visible { opacity: 1; transform: translateY(0); }
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+  will-change: auto; /* liberar GPU después de animar */
+}
+
+/* Variantes de animación (se combinan con .reveal via [data-animation]) */
+.reveal.anim-slideLeft  { transform: translateX(-40px); }
+.reveal.anim-slideRight { transform: translateX(40px); }
+.reveal.anim-scaleIn    { transform: scale(0.94); }
+.reveal.anim-blurIn     { filter: blur(8px); }
+
+.reveal.visible.anim-slideLeft,
+.reveal.visible.anim-slideRight { transform: translateX(0); }
+.reveal.visible.anim-scaleIn    { transform: scale(1); }
+.reveal.visible.anim-blurIn     { filter: blur(0); }
+
+/* Delays de transición */
 .reveal-delay-1 { transition-delay: 0.1s; }
 .reveal-delay-2 { transition-delay: 0.2s; }
 .reveal-delay-3 { transition-delay: 0.3s; }
 .reveal-delay-4 { transition-delay: 0.4s; }
+
+/* ── Seguridad: prevenir selección de texto ── */
+.no-select {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+/* ── Animación aurora para gradientes de texto ── */
+@keyframes aurora-texto {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.gradiente-aurora {
+  background: linear-gradient(
+    135deg,
+    var(--accent-light),
+    var(--accent-purple),
+    var(--accent-pink),
+    var(--accent-light)
+  );
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: aurora-texto 6s ease infinite;
+}

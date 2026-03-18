@@ -20,32 +20,65 @@ import { I18nService } from '../../i18n.service';
   styles: [`
     footer {
       background: #000;
-      border-top: 1px solid rgba(255,255,255,0.07);
+      position: relative;
       padding: 28px 80px;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      overflow: hidden;
     }
+
+    /* Línea superior con gradiente aurora animado */
+    footer::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(0,113,227,0.5) 20%,
+        rgba(147,51,234,0.4) 50%,
+        rgba(236,72,153,0.4) 80%,
+        transparent 100%
+      );
+      background-size: 200% 100%;
+      animation: aurora-deslizar 4s linear infinite;
+    }
+
+    @keyframes aurora-deslizar {
+      0%   { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
     .copy {
       font-family: var(--font-mono);
       font-size: 12px;
       color: rgba(255,255,255,0.2);
       letter-spacing: 0.06em;
     }
+
     .footer-links {
       display: flex;
       align-items: center;
       gap: 28px;
+
       a {
         font-family: var(--font-mono);
         font-size: 12px;
         color: rgba(255,255,255,0.2);
         text-decoration: none;
         letter-spacing: 0.06em;
-        transition: color 0.2s;
-        &:hover { color: rgba(255,255,255,0.7); }
+        transition: color 0.25s ease, transform 0.3s cubic-bezier(0.16,1,0.3,1);
+        display: inline-block;
+
+        &:hover {
+          color: rgba(255,255,255,0.75);
+          transform: translateY(-2px);
+        }
       }
     }
+
     .lang-btn {
       font-family: var(--font-mono);
       font-size: 11px;
@@ -56,9 +89,15 @@ import { I18nService } from '../../i18n.service';
       padding: 4px 10px;
       border-radius: 4px;
       cursor: pointer;
-      transition: all 0.2s;
-      &:hover { color: rgba(255,255,255,0.7); border-color: rgba(255,255,255,0.3); }
+      transition: all 0.25s ease;
+
+      &:hover {
+        color: rgba(255,255,255,0.7);
+        border-color: rgba(255,255,255,0.3);
+        background: rgba(255,255,255,0.04);
+      }
     }
+
     @media (max-width: 768px) {
       footer { padding: 24px; flex-direction: column; gap: 16px; }
     }

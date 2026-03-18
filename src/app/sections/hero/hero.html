@@ -1,22 +1,59 @@
 <section id="hero" class="hero">
-  <div class="hero-bg">
+
+  <!-- Fondo con parallax -->
+  <div class="hero-bg" [style.transform]="'translateY(' + parallaxY() + 'px)'">
     <div class="noise"></div>
     <div class="glow-1"></div>
     <div class="glow-2"></div>
+    <div class="glow-3"></div>
   </div>
+
+  <!-- Orbe que sigue al cursor -->
+  <div
+    class="cursor-orbe"
+    [style.left.px]="orbeX()"
+    [style.top.px]="orbeY()"
+  ></div>
+
   <div class="hero-content">
+
     <p class="hero-eyebrow">{{ i18n.t().hero.location }}</p>
-    <h1 class="hero-name">Julian<br>Cancelo<span class="dot">.</span></h1>
+
+    <!-- Nombre animado letra por letra -->
+    <h1 class="hero-name no-select">
+      <span
+        *ngFor="let letra of nombreLetras()"
+        class="letra"
+        [class.visible]="letra.visible"
+        [class.dot-letra]="letra.char === '.'"
+      >{{ letra.char }}</span>
+    </h1>
+
+    <!-- Typewriter de roles -->
     <p class="hero-role">
-      <span class="typed">{{ displayText }}</span><span class="cursor">|</span>
+      <span class="typed">{{ displayText }}</span
+      ><span class="cursor">|</span>
     </p>
-    <p class="hero-desc" [innerHTML]="i18n.t().hero.desc.replace('\n', '<br>')"></p>
+
+    <p
+      class="hero-desc"
+      [innerHTML]="i18n.t().hero.desc.replace('\n', '<br>')"
+    ></p>
+
     <div class="hero-actions">
-      <button class="btn-main" (click)="scrollTo('projects')">{{ i18n.t().hero.cta }}</button>
-      <button class="btn-ghost" (click)="scrollTo('contact')">{{ i18n.t().hero.ctaContact }}</button>
+      <button class="btn-main" appMagnetic (click)="scrollTo('projects')">
+        {{ i18n.t().hero.cta }}
+      </button>
+      <button class="btn-ghost" appMagnetic (click)="scrollTo('contact')">
+        {{ i18n.t().hero.ctaContact }}
+      </button>
     </div>
+
   </div>
+
+  <!-- Flecha de scroll -->
   <div class="hero-scroll-hint" (click)="scrollTo('about')">
     <div class="scroll-arrow"></div>
   </div>
+
 </section>

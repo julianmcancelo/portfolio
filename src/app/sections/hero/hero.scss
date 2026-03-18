@@ -9,10 +9,12 @@
   overflow: hidden;
 }
 
+/* ── Fondo con parallax ── */
 .hero-bg {
   position: absolute;
   inset: 0;
   pointer-events: none;
+  will-change: transform;
 
   .noise {
     position: absolute;
@@ -23,36 +25,55 @@
 
   .glow-1 {
     position: absolute;
-    width: 800px; height: 800px;
-    background: radial-gradient(circle, rgba(255,255,255,0.04) 0%, transparent 70%);
-    top: -200px; left: -200px;
-    animation: glow-drift 12s ease-in-out infinite;
+    width: 900px; height: 900px;
+    background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
+    top: -250px; left: -250px;
+    animation: glow-drift 14s ease-in-out infinite;
   }
 
   .glow-2 {
     position: absolute;
-    width: 500px; height: 500px;
-    background: radial-gradient(circle, rgba(0,113,227,0.08) 0%, transparent 70%);
-    bottom: 100px; right: -100px;
-    animation: glow-drift 16s ease-in-out infinite reverse;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(0,113,227,0.10) 0%, transparent 70%);
+    bottom: 80px; right: -120px;
+    animation: glow-drift 18s ease-in-out infinite reverse;
+  }
+
+  /* Tercer orbe violeta — toque Oppo */
+  .glow-3 {
+    position: absolute;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(147,51,234,0.07) 0%, transparent 70%);
+    top: 60%; left: 40%;
+    animation: glow-drift 22s ease-in-out infinite 4s;
   }
 }
 
 @keyframes glow-drift {
-  0%, 100% { transform: translate(0, 0); }
-  50%       { transform: translate(40px, 30px); }
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33%       { transform: translate(30px, 20px) scale(1.05); }
+  66%       { transform: translate(-20px, 35px) scale(0.97); }
 }
 
+/* ── Orbe que sigue al cursor ── */
+.cursor-orbe {
+  position: fixed;
+  width: 320px; height: 320px;
+  pointer-events: none;
+  z-index: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0,113,227,0.12) 0%, transparent 70%);
+  transform: translate(-50%, -50%);
+  transition: left 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              top  0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  filter: blur(2px);
+}
+
+/* ── Contenido ── */
 .hero-content {
   position: relative;
   z-index: 1;
-  max-width: 900px;
-  animation: fadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(32px); }
-  to   { opacity: 1; transform: translateY(0); }
+  max-width: 960px;
 }
 
 .hero-eyebrow {
@@ -62,19 +83,45 @@
   color: rgba(255,255,255,0.35);
   text-transform: uppercase;
   margin-bottom: 28px;
+  animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
 }
 
+/* ── Nombre animado letra por letra ── */
 .hero-name {
-  font-size: clamp(72px, 11vw, 148px);
+  font-size: clamp(64px, 10vw, 140px);
   font-weight: 700;
   letter-spacing: -0.04em;
   line-height: 0.92;
   color: #fff;
   margin-bottom: 32px;
+  display: flex;
+  flex-wrap: wrap;
 
-  .dot { color: var(--accent-light); }
+  .letra {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(28px) rotate(3deg);
+    transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+
+    &.visible {
+      opacity: 1;
+      transform: translateY(0) rotate(0deg);
+    }
+
+    /* El punto final */
+    &.dot-letra {
+      color: var(--accent-light);
+    }
+
+    /* Espacio entre palabras */
+    &:empty {
+      width: 0.3em;
+    }
+  }
 }
 
+/* ── Typewriter ── */
 .hero-role {
   font-size: clamp(18px, 2.5vw, 28px);
   font-weight: 300;
@@ -82,13 +129,23 @@
   margin-bottom: 20px;
   min-height: 1.5em;
   letter-spacing: -0.01em;
+  animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both;
 
-  .typed { color: rgba(255,255,255,0.85); }
+  .typed {
+    color: rgba(255,255,255,0.85);
+    /* Gradiente de texto sutil */
+    background: linear-gradient(90deg, #fff 60%, rgba(41,151,255,0.8));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
 
   .cursor {
     color: var(--accent-light);
+    -webkit-text-fill-color: var(--accent-light);
     animation: blink 1s step-end infinite;
     font-weight: 300;
+    margin-left: 1px;
   }
 }
 
@@ -97,6 +154,7 @@
   50%       { opacity: 0; }
 }
 
+/* ── Descripción ── */
 .hero-desc {
   font-size: clamp(15px, 1.6vw, 19px);
   font-weight: 300;
@@ -104,12 +162,15 @@
   line-height: 1.7;
   margin-bottom: 48px;
   letter-spacing: -0.01em;
+  animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.7s both;
 }
 
+/* ── Botones ── */
 .hero-actions {
   display: flex;
   gap: 14px;
   flex-wrap: wrap;
+  animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.9s both;
 
   button {
     padding: 14px 28px;
@@ -118,33 +179,70 @@
     font-size: 15px;
     font-weight: 500;
     cursor: pointer;
-    transition: all 0.25s ease;
     letter-spacing: -0.01em;
     border: none;
+    position: relative;
+    overflow: hidden;
+    /* El efecto magnético maneja transform, así que no ponemos transition general */
   }
 
+  /* Shimmer: luz que pasa de izquierda a derecha en hover */
   .btn-main {
     background: #fff;
     color: #000;
+    transition: background 0.25s ease, box-shadow 0.25s ease;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 60%;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255,255,255,0.4),
+        transparent
+      );
+      transform: skewX(-15deg);
+      transition: none;
+    }
 
     &:hover {
-      background: rgba(255,255,255,0.85);
-      transform: scale(1.02);
+      background: rgba(255,255,255,0.92);
+      box-shadow: 0 0 30px rgba(255,255,255,0.15);
+
+      &::after {
+        animation: shimmer 0.5s ease forwards;
+      }
     }
   }
 
   .btn-ghost {
-    background: rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.06);
     color: rgba(255,255,255,0.8);
     border: 1px solid rgba(255,255,255,0.15) !important;
+    transition: background 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+    backdrop-filter: blur(10px);
 
     &:hover {
-      background: rgba(255,255,255,0.14);
+      background: rgba(255,255,255,0.12);
       color: #fff;
+      border-color: rgba(255,255,255,0.3) !important;
     }
   }
 }
 
+@keyframes shimmer {
+  to { left: 150%; }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(32px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Flecha de scroll ── */
 .hero-scroll-hint {
   position: absolute;
   bottom: 48px;
@@ -153,6 +251,7 @@
   cursor: pointer;
   opacity: 0.3;
   transition: opacity 0.2s;
+  animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 1.2s both;
 
   &:hover { opacity: 0.7; }
 
@@ -168,10 +267,11 @@
 
 @keyframes bounce {
   0%, 100% { transform: rotate(45deg) translateY(0); }
-  50%       { transform: rotate(45deg) translateY(6px); }
+  50%       { transform: rotate(45deg) translateY(8px); }
 }
 
+/* ── Responsivo ── */
 @media (max-width: 768px) {
   .hero { padding: 100px 24px 80px; }
-  .hero-name { font-size: clamp(56px, 15vw, 80px); }
+  .cursor-orbe { display: none; } /* En mobile no hay cursor */
 }
