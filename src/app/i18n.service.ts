@@ -54,8 +54,8 @@ const translations = {
           year: '2025', index: '03',
           desc: 'SaaS platform for bars and restaurants. Multi-tenant architecture with real-time configurable digital menus per business.',
           stack: ['Svelte', 'SvelteKit', 'JavaScript', 'Tailwind CSS'],
-          repo: null, demo: 'https://cartita.digital/demo',
-          demoType: 'video' as const, youtubeId: '',
+          repo: null, demo: 'https://cartita.digital',
+          demoType: 'web' as const, youtubeId: '',
         },
         {
           name: 'E-Commerce + Virtual Card', status: 'Completed', statusClass: 'done',
@@ -160,8 +160,8 @@ const translations = {
           year: '2025', index: '03',
           desc: 'Plataforma SaaS para bares y restaurantes. Arquitectura multitenancy con cartas de menú digitales configurables en tiempo real por negocio.',
           stack: ['Svelte', 'SvelteKit', 'JavaScript', 'Tailwind CSS'],
-          repo: null, demo: 'https://cartita.digital/demo',
-          demoType: 'video' as const, youtubeId: '',
+          repo: null, demo: 'https://cartita.digital',
+          demoType: 'web' as const, youtubeId: '',
         },
         {
           name: 'E-Commerce + Tarjeta Virtual', status: 'Completado', statusClass: 'done',
