@@ -1,12 +1,12 @@
-import { useRef, useEffect, useState } from 'react'
-import { motion, useInView } from 'framer-motion'
+import { useEffect, useRef } from 'react'
+import useInView from '../hooks/useInView'
 
 const skills = [
-  { label: 'Flutter / Dart',     pct: 95, color: '#C8FF00' },
-  { label: 'Firebase',           pct: 90, color: '#00FFFF' },
-  { label: 'Node.js / TS',       pct: 82, color: '#C8FF00' },
-  { label: 'React / Vue',        pct: 78, color: '#00FFFF' },
-  { label: 'Ciberseguridad',     pct: 60, color: '#FF00C8' },
+  { label: 'Flutter / Dart', pct: 95, color: '#E8D070' },
+  { label: 'Firebase',       pct: 90, color: '#70B8F0' },
+  { label: 'Node.js / TS',   pct: 82, color: '#E8D070' },
+  { label: 'React / Vue',    pct: 78, color: '#70B8F0' },
+  { label: 'Ciberseguridad', pct: 60, color: '#C870E8' },
 ]
 
 const lore = [
@@ -15,118 +15,62 @@ const lore = [
   'También construyo sistemas de gestión, backends en Node.js, e-commerce y herramientas internas. Me interesa resolver problemas reales — no demos que se ven bien pero no escalan.',
 ]
 
-function SkillBar({ label, pct, color, delay }) {
-  const ref = useRef()
-  const inView = useInView(ref, { once: true })
+function SkillBar({ label, pct, color, visible }) {
   return (
-    <div ref={ref}>
-      <div className="flex justify-between font-pixel text-[7px] mb-2">
-        <span className="text-[#555580]">{label}</span>
+    <div>
+      <div className="flex justify-between font-pixel text-[7px] mb-2" style={{ color: '#6868A0' }}>
+        <span>{label}</span>
         <span style={{ color }}>{pct}%</span>
       </div>
       <div className="xp-bar">
-        <motion.div
-          className="xp-fill"
-          style={{ background: `linear-gradient(90deg, ${color}, ${color}88)`, boxShadow: `0 0 8px ${color}` }}
-          initial={{ width: 0 }}
-          animate={inView ? { width: `${pct}%` } : {}}
-          transition={{ duration: 1.4, delay, ease: 'easeOut' }}
-        />
+        <div className="xp-fill" style={{
+          width: visible ? `${pct}%` : '0%',
+          background: `linear-gradient(90deg, ${color}, ${color}88)`,
+          boxShadow: `0 0 8px ${color}`,
+        }} />
       </div>
     </div>
   )
 }
 
 export default function About() {
-  const ref = useRef()
-  const inView = useInView(ref, { once: true, margin: '-80px' })
+  const [ref, inView] = useInView()
 
   return (
-    <section id="sobre-mi" ref={ref} className="py-28 md:py-36">
-      <div className="max-w-6xl mx-auto px-6">
+    <section id="sobre-mi" ref={ref} style={{ padding: '112px 0' }}>
+      <div style={{ maxWidth: 1080, margin: '0 auto', padding: '0 24px' }}>
+        <p className={`font-pixel text-[8px] glow-gold mb-2 tracking-widest fade-up ${inView ? 'visible' : ''}`} style={{ color: '#E8D070' }}>LEVEL_01</p>
+        <p className={`font-mono text-xs mb-14 fade-up delay-1 ${inView ? 'visible' : ''}`} style={{ color: '#6868A0' }}>// PLAYER_STATS &amp; LORE</p>
 
-        {/* Section label */}
-        <motion.p
-          initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}}
-          transition={{ duration: 0.4 }}
-          className="font-pixel text-[8px] text-neon mb-2 tracking-widest glow-neon"
-        >
-          LEVEL_01
-        </motion.p>
-        <motion.p
-          initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}}
-          transition={{ duration: 0.4, delay: 0.1 }}
-          className="font-mono text-xs text-[#555580] mb-14"
-        >
-          // PLAYER_STATS &amp; LORE
-        </motion.p>
-
-        <div className="grid md:grid-cols-[1fr_380px] gap-16 items-start">
-          {/* Lore */}
+        <div className="grid md:grid-cols-[1fr_360px] gap-16 items-start">
           <div>
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }} animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="font-display text-3xl md:text-4xl font-bold leading-tight mb-8 text-white"
-            >
+            <h2 className={`font-display text-3xl md:text-4xl font-bold leading-tight mb-8 fade-up delay-2 ${inView ? 'visible' : ''}`}>
               Construyo software que funciona{' '}
-              <span style={{ color: '#C8FF00', textShadow: '0 0 20px rgba(200,255,0,0.4)' }}>
-                cuando importa.
-              </span>
-            </motion.h2>
+              <span style={{ color: '#E8D070', textShadow: '0 0 20px rgba(232,208,112,0.35)' }}>cuando importa.</span>
+            </h2>
 
             {lore.map((p, i) => (
-              <motion.p
-                key={i}
-                initial={{ opacity: 0, x: -20 }} animate={inView ? { opacity: 1, x: 0 } : {}}
-                transition={{ duration: 0.6, delay: 0.3 + i * 0.15 }}
-                className="font-mono text-sm leading-relaxed mb-4"
-                style={{ color: '#7777AA' }}
-              >
-                <span style={{ color: '#C8FF00' }}>&gt;</span> {p}
-              </motion.p>
+              <p key={i} className={`font-mono text-sm leading-relaxed mb-4 fade-up delay-${i + 3} ${inView ? 'visible' : ''}`} style={{ color: '#6868A0' }}>
+                <span style={{ color: '#E8D070' }}>&gt;</span> {p}
+              </p>
             ))}
 
-            {/* Achievements */}
-            <motion.div
-              initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}}
-              transition={{ delay: 0.9 }}
-              className="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-3"
-            >
-              {[
-                { val: '1K+', label: 'USUARIOS' },
-                { val: '4+',  label: 'AÑOS XP' },
-                { val: '30+', label: 'REPOS' },
-                { val: '2',   label: 'CARRERAS' },
-              ].map(({ val, label }) => (
-                <div
-                  key={label}
-                  className="px-border-dim p-4 text-center"
-                  style={{ background: 'rgba(200,255,0,0.03)' }}
-                >
-                  <div className="font-display text-2xl font-bold" style={{ color: '#C8FF00', textShadow: '0 0 15px rgba(200,255,0,0.5)' }}>
-                    {val}
-                  </div>
-                  <div className="font-pixel text-[7px] text-[#555580] mt-1">{label}</div>
+            <div className={`mt-10 grid grid-cols-2 sm:grid-cols-4 gap-3 fade-up delay-6 ${inView ? 'visible' : ''}`}>
+              {[['1K+','USUARIOS'],['4+','AÑOS XP'],['30+','REPOS'],['2','CARRERAS']].map(([v, l]) => (
+                <div key={l} className="ff-window p-4 text-center">
+                  <div className="font-display text-2xl font-bold glow-gold" style={{ color: '#E8D070' }}>{v}</div>
+                  <div className="font-pixel text-[7px] mt-1" style={{ color: '#6868A0' }}>{l}</div>
                 </div>
               ))}
-            </motion.div>
+            </div>
           </div>
 
-          {/* Skill bars */}
-          <motion.div
-            initial={{ opacity: 0, x: 30 }} animate={inView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="px-border-dim p-6"
-            style={{ background: 'rgba(200,255,0,0.02)' }}
-          >
-            <p className="font-pixel text-[8px] text-neon mb-6 tracking-widest">SKILL_TREE</p>
+          <div className={`ff-window p-6 fade-up delay-3 ${inView ? 'visible' : ''}`}>
+            <p className="font-pixel text-[8px] glow-gold mb-6 tracking-widest" style={{ color: '#E8D070' }}>SKILL_TREE</p>
             <div className="flex flex-col gap-5">
-              {skills.map((s, i) => (
-                <SkillBar key={s.label} {...s} delay={0.6 + i * 0.1} />
-              ))}
+              {skills.map(s => <SkillBar key={s.label} {...s} visible={inView} />)}
             </div>
-          </motion.div>
+          </div>
         </div>
       </div>
     </section>

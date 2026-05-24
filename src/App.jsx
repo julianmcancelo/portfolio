@@ -1,5 +1,3 @@
-import { useEffect } from 'react'
-import Lenis from 'lenis'
 import Background from './components/Background'
 import Nav from './components/Nav'
 import Hero from './sections/Hero'
@@ -10,18 +8,10 @@ import Contact from './sections/Contact'
 import Footer from './components/Footer'
 
 export default function App() {
-  useEffect(() => {
-    const lenis = new Lenis({ lerp: 0.08, smoothWheel: true })
-    const raf = (time) => { lenis.raf(time); requestAnimationFrame(raf) }
-    const id = requestAnimationFrame(raf)
-    return () => { cancelAnimationFrame(id); lenis.destroy() }
-  }, [])
-
   return (
     <>
       <Background />
       <Nav />
-
       <main>
         <Hero />
         <About />
@@ -29,7 +19,6 @@ export default function App() {
         <Stack />
         <Contact />
       </main>
-
       <Footer />
     </>
   )
