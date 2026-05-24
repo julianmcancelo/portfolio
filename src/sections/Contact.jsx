@@ -3,19 +3,19 @@ import { motion, useInView } from 'framer-motion'
 
 const links = [
   {
-    icon: '✉',
+    tag: 'mail',
     label: 'julianmcancelo@gmail.com',
     href: 'mailto:julianmcancelo@gmail.com',
     color: '#7B61FF',
   },
   {
-    icon: '▲',
+    tag: 'in',
     label: 'linkedin.com/in/julianmcancelo',
     href: 'https://linkedin.com/in/julianmcancelo',
     color: '#A78BFA',
   },
   {
-    icon: '◎',
+    tag: 'gh',
     label: 'github.com/julianmcancelo',
     href: 'https://github.com/julianmcancelo',
     color: '#EC4899',
@@ -59,7 +59,7 @@ export default function Contact() {
         </motion.p>
 
         <div className="flex flex-col gap-4 max-w-md">
-          {links.map(({ icon, label, href, color }, i) => (
+          {links.map(({ tag, label, href, color }, i) => (
             <motion.a
               key={href}
               href={href}
@@ -72,10 +72,10 @@ export default function Contact() {
               className="group flex items-center gap-5 p-5 rounded-2xl border border-white/5 bg-white/[0.025] hover:bg-white/[0.05] hover:border-white/10 transition-all duration-300"
             >
               <span
-                className="w-10 h-10 flex items-center justify-center rounded-xl text-sm font-bold shrink-0 transition-colors duration-300"
+                className="w-12 h-10 flex items-center justify-center rounded-xl font-mono text-xs font-bold shrink-0 tracking-wider"
                 style={{ background: `${color}18`, color }}
               >
-                {icon}
+                {tag}
               </span>
               <span className="font-mono text-sm text-gray-400 group-hover:text-white transition-colors duration-200">
                 {label}

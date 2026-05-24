@@ -16,14 +16,14 @@ const featured = {
 
 const projects = [
   {
-    icon: '🏭',
+    num: '01',
     name: 'STOCKAR',
     desc: 'Sistema de inventario multiplataforma con sincronización en tiempo real y diseño offline-first.',
     tags: ['TypeScript', 'Node.js', 'MySQL'],
     color: '#7B61FF',
   },
   {
-    icon: '🔷',
+    num: '02',
     name: 'Grana3D',
     desc: 'E-commerce con visualización 3D de productos. Catálogo interactivo, carrito y panel de administración.',
     tags: ['TypeScript', 'Vue', 'Three.js'],
@@ -31,14 +31,14 @@ const projects = [
     color: '#A78BFA',
   },
   {
-    icon: '🏛️',
+    num: '03',
     name: 'Habilitaciones Municipales',
     desc: 'Sistema de gestión para municipios. Expedientes, vencimientos y notificaciones automáticas.',
     tags: ['JavaScript', 'PHP', 'MySQL'],
     color: '#EC4899',
   },
   {
-    icon: '📅',
+    num: '04',
     name: 'Sistema de Turnos',
     desc: 'Gestión de turnos para comercios. Agenda visual, recordatorios e historial de clientes.',
     tags: ['PHP', 'MySQL'],
@@ -46,7 +46,7 @@ const projects = [
     color: '#F59E0B',
   },
   {
-    icon: '🗺️',
+    num: '05',
     name: 'Mapa de Asientos',
     desc: 'Selector interactivo de asientos para eventos con Canvas API y reserva en tiempo real.',
     tags: ['JavaScript', 'Canvas API'],
@@ -54,7 +54,7 @@ const projects = [
     color: '#10B981',
   },
   {
-    icon: '🥗',
+    num: '06',
     name: 'App Nutricional',
     desc: 'Seguimiento de calorías, planes alimentarios y registro diario con sincronización Firebase.',
     tags: ['Flutter', 'Dart', 'Firebase'],
@@ -175,7 +175,7 @@ export default function Projects() {
                 className="group h-full flex flex-col p-6 rounded-2xl border border-white/5 bg-white/[0.025] hover:border-white/10 hover:bg-white/[0.04] transition-all duration-300"
               >
                 <div className="flex items-start justify-between mb-4">
-                  <span className="text-2xl">{p.icon}</span>
+                  <span className="font-mono text-xs font-semibold" style={{ color: p.color }}>{p.num}</span>
                   <div className="flex gap-1.5 flex-wrap justify-end">
                     {p.tags.map(t => (
                       <span key={t} className="font-mono text-[10px] text-gray-500 border border-white/8 px-2 py-0.5 rounded-full bg-white/[0.03]">
