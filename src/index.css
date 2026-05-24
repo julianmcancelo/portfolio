@@ -3,16 +3,16 @@
 @tailwind utilities;
 
 :root {
-  --bg:      #06060F;
-  --bg2:     #0A0A18;
-  --bg3:     #0E0E20;
-  --neon:    #C8FF00;
-  --cyan:    #00FFFF;
-  --magenta: #FF00C8;
-  --purple:  #BF5FFF;
-  --text:    #E8E8FF;
-  --muted:   #555580;
-  --border:  rgba(200,255,0,0.15);
+  --bg:      #0E0B28;
+  --bg2:     #14103A;
+  --bg3:     #1E1850;
+  --neon:    #E8D070;
+  --cyan:    #70B8F0;
+  --magenta: #C870E8;
+  --purple:  #8868D0;
+  --text:    #E8E8F4;
+  --muted:   #6868A0;
+  --border:  rgba(232,208,112,0.18);
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -53,16 +53,13 @@ body::before {
   z-index: 9996;
 }
 
-/* ── Hide cursor on desktop ───────────────────────────────── */
-@media (pointer: fine) { * { cursor: none !important; } }
-
 /* ── Scrollbar ────────────────────────────────────────────── */
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: var(--bg); }
-::-webkit-scrollbar-thumb { background: var(--neon); }
+::-webkit-scrollbar-thumb { background: var(--purple); border-radius: 2px; }
 
 /* ── Selection ────────────────────────────────────────────── */
-::selection { background: rgba(200,255,0,0.2); color: var(--neon); }
+::selection { background: rgba(232,208,112,0.25); color: var(--neon); }
 
 /* ── Pixel border util ────────────────────────────────────── */
 .px-border {

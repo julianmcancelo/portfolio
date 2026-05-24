@@ -203,18 +203,12 @@ function PixelChar({ rows, scale = SCALE }) {
   )
 }
 
-// Animated walking character
-function WalkingChar({ sprite, delay = 0 }) {
-  const [frame, setFrame] = useState(0)
-
-  useEffect(() => {
-    const id = setInterval(() => setFrame(f => (f + 1) % sprite.frames.length), 220)
-    return () => clearInterval(id)
-  }, [sprite.frames.length])
-
+// Single global tick — one timer for ALL sprites
+function WalkingChar({ sprite, frame }) {
+  const f = frame % sprite.frames.length
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
-      <PixelChar rows={sprite.frames[frame]} />
+      <PixelChar rows={sprite.frames[f]} />
       <span style={{
         fontFamily: '"Press Start 2P", monospace',
         fontSize: 5,
@@ -229,12 +223,17 @@ function WalkingChar({ sprite, delay = 0 }) {
   )
 }
 
-// Party marching across the hero section
 export function WalkingParty() {
+  const [frame, setFrame] = useState(0)
+  useEffect(() => {
+    const id = setInterval(() => setFrame(f => f + 1), 260)
+    return () => clearInterval(id)
+  }, [])
+
   return (
     <div style={{ display: 'flex', gap: 28, alignItems: 'flex-end' }}>
-      {Object.values(SPRITES).map((sp, i) => (
-        <WalkingChar key={sp.label} sprite={sp} delay={i * 80} />
+      {Object.values(SPRITES).map((sp) => (
+        <WalkingChar key={sp.label} sprite={sp} frame={frame} />
       ))}
     </div>
   )

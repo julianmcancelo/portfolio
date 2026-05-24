@@ -31,8 +31,8 @@ export default function Nav() {
     >
       <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
         {/* Logo */}
-        <a href="#hero" className="font-pixel text-[10px] text-neon glow-neon tracking-wider">
-          JC<span className="text-cyan blink">_</span>
+        <a href="#hero" className="font-pixel text-[10px] tracking-wider" style={{ color: '#E8D070', textShadow: '0 0 10px rgba(232,208,112,0.5)' }}>
+          JC<span className="blink" style={{ color: '#70B8F0' }}>_</span>
         </a>
 
         {/* Desktop */}

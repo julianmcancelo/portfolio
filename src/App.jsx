@@ -1,7 +1,6 @@
 import { useEffect } from 'react'
 import Lenis from 'lenis'
 import Background from './components/Background'
-import Cursor from './components/Cursor'
 import Nav from './components/Nav'
 import Hero from './sections/Hero'
 import About from './sections/About'
@@ -21,8 +20,6 @@ export default function App() {
   return (
     <>
       <Background />
-
-      <Cursor />
       <Nav />
 
       <main>
