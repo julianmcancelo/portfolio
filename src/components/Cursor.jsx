@@ -3,74 +3,48 @@ import { motion, useMotionValue, useSpring } from 'framer-motion'
 
 export default function Cursor() {
   const [visible, setVisible] = useState(false)
-  const [hovering, setHovering] = useState(false)
+  const [clicking, setClicking] = useState(false)
 
   const mx = useMotionValue(-100)
   const my = useMotionValue(-100)
-
-  // Outer ring — slow spring
-  const rx = useSpring(mx, { stiffness: 180, damping: 22 })
-  const ry = useSpring(my, { stiffness: 180, damping: 22 })
-
-  // Inner dot — snappy
-  const dx = useSpring(mx, { stiffness: 800, damping: 40 })
-  const dy = useSpring(my, { stiffness: 800, damping: 40 })
+  const rx = useSpring(mx, { stiffness: 300, damping: 28 })
+  const ry = useSpring(my, { stiffness: 300, damping: 28 })
 
   useEffect(() => {
-    const isMobile = window.matchMedia('(pointer: coarse)').matches
-    if (isMobile) return
-
-    const move = (e) => {
-      mx.set(e.clientX)
-      my.set(e.clientY)
-      if (!visible) setVisible(true)
-    }
-
-    const over = (e) => {
-      if (e.target.closest('a, button, [data-hover]')) setHovering(true)
-    }
-    const out = (e) => {
-      if (e.target.closest('a, button, [data-hover]')) setHovering(false)
-    }
-
+    if (window.matchMedia('(pointer: coarse)').matches) return
+    const move = (e) => { mx.set(e.clientX); my.set(e.clientY); setVisible(true) }
+    const down = () => setClicking(true)
+    const up   = () => setClicking(false)
     window.addEventListener('mousemove', move)
-    window.addEventListener('mouseover', over)
-    window.addEventListener('mouseout', out)
+    window.addEventListener('mousedown', down)
+    window.addEventListener('mouseup',   up)
     return () => {
       window.removeEventListener('mousemove', move)
-      window.removeEventListener('mouseover', over)
-      window.removeEventListener('mouseout', out)
+      window.removeEventListener('mousedown', down)
+      window.removeEventListener('mouseup',   up)
     }
-  }, [visible])
+  }, [])
 
   if (!visible) return null
 
+  const s = clicking ? 10 : 16
+
   return (
-    <>
-      {/* Outer ring */}
-      <motion.div
-        className="fixed top-0 left-0 pointer-events-none z-[9999] rounded-full border"
-        style={{
-          x: rx, y: ry,
-          translateX: '-50%', translateY: '-50%',
-          borderColor: hovering ? 'rgba(167,139,250,0.8)' : 'rgba(123,97,255,0.5)',
-          transition: 'width 0.2s, height 0.2s, border-color 0.2s',
-          width: hovering ? 48 : 32,
-          height: hovering ? 48 : 32,
-          mixBlendMode: 'difference',
-        }}
-      />
-      {/* Inner dot */}
-      <motion.div
-        className="fixed top-0 left-0 pointer-events-none z-[9999] rounded-full bg-purple-400"
-        style={{
-          x: dx, y: dy,
-          translateX: '-50%', translateY: '-50%',
-          width: hovering ? 6 : 5,
-          height: hovering ? 6 : 5,
-          transition: 'width 0.2s, height 0.2s',
-        }}
-      />
-    </>
+    <motion.div
+      className="fixed top-0 left-0 pointer-events-none z-[9999]"
+      style={{ x: rx, y: ry, translateX: '-50%', translateY: '-50%' }}
+    >
+      {/* Crosshair — pixel style */}
+      <svg width={s * 2} height={s * 2} viewBox="0 0 32 32" fill="none" style={{ overflow: 'visible' }}>
+        {/* Horizontal line */}
+        <rect x="0"  y="15" width="12" height="2" fill="#C8FF00" />
+        <rect x="20" y="15" width="12" height="2" fill="#C8FF00" />
+        {/* Vertical line */}
+        <rect x="15" y="0"  width="2" height="12" fill="#C8FF00" />
+        <rect x="15" y="20" width="2" height="12" fill="#C8FF00" />
+        {/* Center pixel */}
+        <rect x="14" y="14" width="4" height="4" fill="#C8FF00" />
+      </svg>
+    </motion.div>
   )
 }

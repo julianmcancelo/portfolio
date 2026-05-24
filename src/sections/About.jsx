@@ -1,45 +1,40 @@
 import { useRef, useEffect, useState } from 'react'
 import { motion, useInView } from 'framer-motion'
 
-const stats = [
-  { num: 1000, suffix: '+', label: 'Usuarios activos en Bitácora Docente' },
-  { num: 4,   suffix: '+', label: 'Años desarrollando apps y sistemas' },
-  { num: 30,  suffix: '+', label: 'Repositorios públicos en GitHub' },
-  { num: 2,   suffix: '',  label: 'Carreras universitarias en curso' },
+const skills = [
+  { label: 'Flutter / Dart',     pct: 95, color: '#C8FF00' },
+  { label: 'Firebase',           pct: 90, color: '#00FFFF' },
+  { label: 'Node.js / TS',       pct: 82, color: '#C8FF00' },
+  { label: 'React / Vue',        pct: 78, color: '#00FFFF' },
+  { label: 'Ciberseguridad',     pct: 60, color: '#FF00C8' },
 ]
 
-function Counter({ target, suffix }) {
-  const [count, setCount] = useState(0)
+const lore = [
+  'Soy de Lanús, Buenos Aires. Terminando Analista de Sistemas y cursando Ciberseguridad en paralelo — porque la seguridad tiene que estar en el diseño, no como parche al final.',
+  'Me especialicé en arquitecturas offline-first con Flutter y Firebase. Eso me llevó a construir Bitácora Docente, una app con más de 1.000 usuarios activos que funciona sin internet en el aula.',
+  'También construyo sistemas de gestión, backends en Node.js, e-commerce y herramientas internas. Me interesa resolver problemas reales — no demos que se ven bien pero no escalan.',
+]
+
+function SkillBar({ label, pct, color, delay }) {
   const ref = useRef()
   const inView = useInView(ref, { once: true })
-
-  useEffect(() => {
-    if (!inView) return
-    let start = 0
-    const duration = 1600
-    const step = (timestamp) => {
-      if (!start) start = timestamp
-      const progress = Math.min((timestamp - start) / duration, 1)
-      const ease = 1 - Math.pow(1 - progress, 3)
-      setCount(Math.floor(ease * target))
-      if (progress < 1) requestAnimationFrame(step)
-    }
-    requestAnimationFrame(step)
-  }, [inView, target])
-
   return (
-    <span ref={ref} className="font-display text-4xl md:text-5xl font-bold gradient-text">
-      {count.toLocaleString()}{suffix}
-    </span>
+    <div ref={ref}>
+      <div className="flex justify-between font-pixel text-[7px] mb-2">
+        <span className="text-[#555580]">{label}</span>
+        <span style={{ color }}>{pct}%</span>
+      </div>
+      <div className="xp-bar">
+        <motion.div
+          className="xp-fill"
+          style={{ background: `linear-gradient(90deg, ${color}, ${color}88)`, boxShadow: `0 0 8px ${color}` }}
+          initial={{ width: 0 }}
+          animate={inView ? { width: `${pct}%` } : {}}
+          transition={{ duration: 1.4, delay, ease: 'easeOut' }}
+        />
+      </div>
+    </div>
   )
-}
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 40 },
-  visible: (i = 0) => ({
-    opacity: 1, y: 0,
-    transition: { duration: 0.7, delay: i * 0.12, ease: [0.22, 1, 0.36, 1] }
-  })
 }
 
 export default function About() {
@@ -47,59 +42,91 @@ export default function About() {
   const inView = useInView(ref, { once: true, margin: '-80px' })
 
   return (
-    <section id="sobre-mi" ref={ref} className="py-28 md:py-40">
+    <section id="sobre-mi" ref={ref} className="py-28 md:py-36">
       <div className="max-w-6xl mx-auto px-6">
-        {/* Label */}
+
+        {/* Section label */}
         <motion.p
-          variants={fadeUp} initial="hidden" animate={inView ? 'visible' : 'hidden'}
-          className="font-mono text-xs text-purple-400 tracking-[0.2em] uppercase mb-6"
+          initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}}
+          transition={{ duration: 0.4 }}
+          className="font-pixel text-[8px] text-neon mb-2 tracking-widest glow-neon"
         >
-          01 — Sobre mí
+          LEVEL_01
+        </motion.p>
+        <motion.p
+          initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}}
+          transition={{ duration: 0.4, delay: 0.1 }}
+          className="font-mono text-xs text-[#555580] mb-14"
+        >
+          // PLAYER_STATS &amp; LORE
         </motion.p>
 
-        <div className="grid md:grid-cols-[1fr_340px] gap-16 md:gap-24 items-start">
-          {/* Text */}
+        <div className="grid md:grid-cols-[1fr_380px] gap-16 items-start">
+          {/* Lore */}
           <div>
             <motion.h2
-              variants={fadeUp} initial="hidden" animate={inView ? 'visible' : 'hidden'} custom={0.5}
-              className="font-display text-3xl md:text-5xl font-bold leading-tight tracking-tight mb-8"
+              initial={{ opacity: 0, y: 20 }} animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="font-display text-3xl md:text-4xl font-bold leading-tight mb-8 text-white"
             >
-              Construyo software que funciona
-              <br />
-              <span className="gradient-text">cuando importa.</span>
+              Construyo software que funciona{' '}
+              <span style={{ color: '#C8FF00', textShadow: '0 0 20px rgba(200,255,0,0.4)' }}>
+                cuando importa.
+              </span>
             </motion.h2>
 
-            {[
-              'Soy de Lanús, Buenos Aires. Terminando mi carrera como Analista de Sistemas y cursando Ciberseguridad en paralelo — porque siempre creí que la seguridad tiene que estar en el diseño, no como parche al final.',
-              'Me especialicé en desarrollo mobile con Flutter y en arquitecturas que aguantan offline, se sincronizan solas y no fallan cuando el docente está en el aula sin señal. Ese problema concreto me llevó a construir Bitácora Docente, una app con más de 1.000 usuarios activos en Argentina.',
-              'También construyo sistemas de gestión, backends en Node.js y TypeScript, e-commerce, y herramientas internas. Lo que más me interesa es resolver problemas reales — no demos que se ven bien pero no escalan.',
-            ].map((p, i) => (
+            {lore.map((p, i) => (
               <motion.p
                 key={i}
-                variants={fadeUp} initial="hidden" animate={inView ? 'visible' : 'hidden'} custom={1 + i * 0.3}
-                className="text-gray-400 leading-relaxed mb-4 text-base md:text-lg"
+                initial={{ opacity: 0, x: -20 }} animate={inView ? { opacity: 1, x: 0 } : {}}
+                transition={{ duration: 0.6, delay: 0.3 + i * 0.15 }}
+                className="font-mono text-sm leading-relaxed mb-4"
+                style={{ color: '#7777AA' }}
               >
-                {p}
+                <span style={{ color: '#C8FF00' }}>&gt;</span> {p}
               </motion.p>
             ))}
+
+            {/* Achievements */}
+            <motion.div
+              initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}}
+              transition={{ delay: 0.9 }}
+              className="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-3"
+            >
+              {[
+                { val: '1K+', label: 'USUARIOS' },
+                { val: '4+',  label: 'AÑOS XP' },
+                { val: '30+', label: 'REPOS' },
+                { val: '2',   label: 'CARRERAS' },
+              ].map(({ val, label }) => (
+                <div
+                  key={label}
+                  className="px-border-dim p-4 text-center"
+                  style={{ background: 'rgba(200,255,0,0.03)' }}
+                >
+                  <div className="font-display text-2xl font-bold" style={{ color: '#C8FF00', textShadow: '0 0 15px rgba(200,255,0,0.5)' }}>
+                    {val}
+                  </div>
+                  <div className="font-pixel text-[7px] text-[#555580] mt-1">{label}</div>
+                </div>
+              ))}
+            </motion.div>
           </div>
 
-          {/* Stats */}
-          <div className="grid grid-cols-2 gap-4">
-            {stats.map(({ num, suffix, label }, i) => (
-              <motion.div
-                key={label}
-                variants={fadeUp} initial="hidden" animate={inView ? 'visible' : 'hidden'} custom={1 + i * 0.15}
-                className="p-5 rounded-2xl border border-white/5 flex flex-col gap-2"
-                style={{ background: 'rgba(255,255,255,0.025)' }}
-                whileHover={{ borderColor: 'rgba(123,97,255,0.25)', background: 'rgba(255,255,255,0.04)' }}
-                transition={{ duration: 0.2 }}
-              >
-                <Counter target={num} suffix={suffix} />
-                <span className="text-xs text-gray-500 leading-snug">{label}</span>
-              </motion.div>
-            ))}
-          </div>
+          {/* Skill bars */}
+          <motion.div
+            initial={{ opacity: 0, x: 30 }} animate={inView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="px-border-dim p-6"
+            style={{ background: 'rgba(200,255,0,0.02)' }}
+          >
+            <p className="font-pixel text-[8px] text-neon mb-6 tracking-widest">SKILL_TREE</p>
+            <div className="flex flex-col gap-5">
+              {skills.map((s, i) => (
+                <SkillBar key={s.label} {...s} delay={0.6 + i * 0.1} />
+              ))}
+            </div>
+          </motion.div>
         </div>
       </div>
     </section>

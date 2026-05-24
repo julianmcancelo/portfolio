@@ -1,168 +1,176 @@
 import { useEffect, useState, useRef } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 
-const ROLES = ['mobile developer', 'web developer', 'systems analyst', 'flutter engineer']
+const ROLES = ['MOBILE DEV', 'WEB DEV', 'SYS ANALYST', 'FLUTTER ENG']
 
-function useTypewriter(words, speed = 110) {
+function useTypewriter(words, speed = 120) {
   const [text, setText] = useState('')
-  const [wi, setWi] = useState(0)
-  const [ci, setCi] = useState(0)
-  const [del, setDel] = useState(false)
+  const [wi, setWi]     = useState(0)
+  const [ci, setCi]     = useState(0)
+  const [del, setDel]   = useState(false)
 
   useEffect(() => {
     const word = words[wi]
     const id = setTimeout(() => {
       if (!del) {
         setText(word.slice(0, ci + 1))
-        if (ci + 1 === word.length) setTimeout(() => setDel(true), 1800)
+        if (ci + 1 === word.length) setTimeout(() => setDel(true), 1600)
         else setCi(c => c + 1)
       } else {
         setText(word.slice(0, ci - 1))
-        if (ci - 1 === 0) {
-          setDel(false)
-          setWi(w => (w + 1) % words.length)
-          setCi(0)
-        } else setCi(c => c - 1)
+        if (ci - 1 === 0) { setDel(false); setWi(w => (w + 1) % words.length); setCi(0) }
+        else setCi(c => c - 1)
       }
-    }, del ? speed * 0.5 : speed)
+    }, del ? speed * 0.4 : speed)
     return () => clearTimeout(id)
   }, [ci, del, wi, words, speed])
 
   return text
 }
 
-function ScrambleText({ text, className }) {
-  const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%'
-  const [display, setDisplay] = useState(text)
-  const [done, setDone] = useState(false)
-
-  useEffect(() => {
-    if (done) return
-    let iter = 0
-    const interval = setInterval(() => {
-      setDisplay(
-        text.split('').map((char, i) => {
-          if (char === ' ') return ' '
-          if (i < iter) return text[i]
-          return CHARS[Math.floor(Math.random() * CHARS.length)]
-        }).join('')
-      )
-      iter += 0.5
-      if (iter >= text.length) { setDisplay(text); setDone(true); clearInterval(interval) }
-    }, 40)
-    return () => clearInterval(interval)
-  }, [text])
-
-  return <span className={className}>{display}</span>
+function useCountdown() {
+  const [t, setT] = useState(Date.now())
+  useEffect(() => { const id = setInterval(() => setT(Date.now()), 1000); return () => clearInterval(id) }, [])
+  const d = new Date(t)
+  return `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}:${String(d.getSeconds()).padStart(2,'0')}`
 }
 
 export default function Hero() {
-  const role = useTypewriter(ROLES)
-  const ref = useRef()
+  const role  = useTypewriter(ROLES)
+  const clock = useCountdown()
+  const ref   = useRef()
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] })
-  const y   = useTransform(scrollYProgress, [0, 1], [0, -120])
-  const op  = useTransform(scrollYProgress, [0, 0.6], [1, 0])
+  const y  = useTransform(scrollYProgress, [0, 1], [0, -100])
+  const op = useTransform(scrollYProgress, [0, 0.7], [1, 0])
 
   return (
-    <section id="hero" ref={ref} className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Gradient orbs */}
-      <div className="absolute top-1/4 -left-32 w-[500px] h-[500px] rounded-full pointer-events-none"
-        style={{ background: 'radial-gradient(circle, rgba(123,97,255,0.12) 0%, transparent 70%)' }} />
-      <div className="absolute bottom-1/4 -right-32 w-[400px] h-[400px] rounded-full pointer-events-none"
-        style={{ background: 'radial-gradient(circle, rgba(236,72,153,0.08) 0%, transparent 70%)' }} />
+    <section id="hero" ref={ref} className="relative min-h-screen flex items-center overflow-hidden">
+      {/* Gradient bloom */}
+      <div className="absolute top-1/3 left-1/4 w-[600px] h-[600px] rounded-full pointer-events-none"
+        style={{ background: 'radial-gradient(circle, rgba(200,255,0,0.04) 0%, transparent 70%)' }} />
+      <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] rounded-full pointer-events-none"
+        style={{ background: 'radial-gradient(circle, rgba(0,255,255,0.04) 0%, transparent 70%)' }} />
 
-      <motion.div style={{ y, opacity: op }} className="relative z-10 max-w-6xl mx-auto px-6 w-full">
-        {/* Badge */}
+      <motion.div style={{ y, opacity: op }} className="relative z-10 max-w-6xl mx-auto px-6 w-full pt-24 pb-16">
+
+        {/* HUD top bar */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="inline-flex items-center gap-2.5 px-4 py-2 mb-10 rounded-full border text-sm font-mono font-medium text-purple-300"
-          style={{ borderColor: 'rgba(123,97,255,0.25)', background: 'rgba(123,97,255,0.06)' }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.2, duration: 0.6 }}
+          className="flex items-center justify-between mb-12 font-mono text-xs text-[#555580] border-b pb-3"
+          style={{ borderColor: 'rgba(200,255,0,0.1)' }}
         >
-          <span className="w-2 h-2 rounded-full bg-green-400" style={{ boxShadow: '0 0 8px #4ade80', animation: 'pulse 2s infinite' }} />
-          Disponible para proyectos · Buenos Aires, AR
+          <span>PLAYER_01 // BUENOS_AIRES_AR</span>
+          <span className="font-pixel text-[8px] text-neon">{clock}</span>
+          <span className="hidden sm:block">LVL.04 &nbsp;|&nbsp; XP: 1000+</span>
         </motion.div>
 
         {/* Main title */}
-        <div className="overflow-hidden">
+        <div className="mb-2 overflow-hidden">
           <motion.h1
             className="font-display font-bold leading-none tracking-tighter text-white block"
-            style={{ fontSize: 'clamp(72px, 13vw, 180px)' }}
-            initial={{ y: '105%' }}
+            style={{ fontSize: 'clamp(64px, 12vw, 160px)' }}
+            data-text="JULIÁN"
+            initial={{ y: '110%' }}
             animate={{ y: 0 }}
-            transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
+            transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
           >
             JULIÁN
           </motion.h1>
         </div>
-        <div className="overflow-hidden">
+
+        <div className="overflow-hidden mb-8">
           <motion.h1
-            className="font-display font-bold leading-none tracking-tighter block outlined-text"
-            style={{ fontSize: 'clamp(72px, 13vw, 180px)' }}
-            initial={{ y: '105%' }}
+            className="font-display font-bold leading-none tracking-tighter block"
+            style={{
+              fontSize: 'clamp(64px, 12vw, 160px)',
+              WebkitTextStroke: '2px #C8FF00',
+              color: 'transparent',
+              textShadow: '0 0 40px rgba(200,255,0,0.15)',
+            }}
+            initial={{ y: '110%' }}
             animate={{ y: 0 }}
-            transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.18 }}
+            transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1], delay: 0.4 }}
           >
-            <ScrambleText text="CANCELO" />
+            CANCELO
           </motion.h1>
         </div>
 
-        {/* Role typewriter */}
-        <motion.p
+        {/* Typewriter role */}
+        <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 1.0, duration: 0.6 }}
-          className="mt-8 font-mono text-lg md:text-xl text-gray-400"
+          transition={{ delay: 1.0 }}
+          className="font-pixel text-[11px] md:text-[13px] mb-3"
+          style={{ color: '#00FFFF' }}
         >
-          {'>'}{' '}
-          <span className="text-purple-400">{role}</span>
-          <span className="text-purple-300 animate-pulse">▌</span>
-        </motion.p>
+          &gt;&gt; {role}<span className="blink">_</span>
+        </motion.div>
 
-        {/* Sub */}
-        <motion.p
+        <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 1.1, duration: 0.6 }}
-          className="mt-2 text-sm font-mono text-gray-600 tracking-wide"
+          transition={{ delay: 1.1 }}
+          className="font-mono text-xs text-[#555580] mb-12"
         >
-          Analista de Sistemas · Ciberseguridad · 4+ años construyendo productos reales
-        </motion.p>
+          /* Analista de Sistemas · Ciberseguridad · 4+ años */
+        </motion.div>
+
+        {/* Pixel stat bar */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.2 }}
+          className="grid grid-cols-3 gap-4 max-w-md mb-12"
+        >
+          {[
+            { label: 'USERS',  val: '1000+', pct: 100 },
+            { label: 'YEARS',  val: '4+',    pct: 65 },
+            { label: 'REPOS',  val: '30+',   pct: 80 },
+          ].map(({ label, val, pct }) => (
+            <div key={label}>
+              <div className="flex justify-between font-pixel text-[7px] mb-1.5">
+                <span style={{ color: '#555580' }}>{label}</span>
+                <span style={{ color: '#C8FF00' }}>{val}</span>
+              </div>
+              <div className="xp-bar">
+                <motion.div
+                  className="xp-fill"
+                  initial={{ width: 0 }}
+                  animate={{ width: `${pct}%` }}
+                  transition={{ delay: 1.5, duration: 1.4, ease: 'easeOut' }}
+                />
+              </div>
+            </div>
+          ))}
+        </motion.div>
 
         {/* CTAs */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.3, duration: 0.5 }}
-          className="flex gap-4 mt-10 flex-wrap"
+          transition={{ delay: 1.4 }}
+          className="flex flex-wrap gap-5 items-center"
         >
-          <a
-            href="#proyectos"
-            className="group relative px-8 py-4 rounded-xl font-semibold text-white overflow-hidden"
-            style={{ background: 'linear-gradient(135deg, #7B61FF, #A78BFA)' }}
-          >
-            <span className="relative z-10">Ver proyectos →</span>
-            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-              style={{ background: 'linear-gradient(135deg, #6B51EF, #7B61FF)' }} />
-          </a>
-          <a
-            href="#contacto"
-            className="px-8 py-4 rounded-xl font-semibold text-gray-300 hover:text-white border border-white/10 hover:border-white/25 backdrop-blur-sm transition-all duration-200"
-          >
-            Hablar conmigo
-          </a>
+          <a href="#proyectos" className="btn-pixel">PLAY &gt;</a>
+          <a href="#contacto"  className="btn-pixel-outline">INSERT COIN</a>
         </motion.div>
 
         {/* Scroll indicator */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 2, duration: 1 }}
-          className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3"
+          transition={{ delay: 2.2 }}
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 font-pixel text-[7px] text-[#555580] flex flex-col items-center gap-3"
         >
-          <span className="font-mono text-[10px] tracking-[0.3em] text-gray-700 uppercase">scroll</span>
-          <div className="w-px h-14" style={{ background: 'linear-gradient(to bottom, rgba(123,97,255,0.6), transparent)' }} />
+          <span>SCROLL DOWN</span>
+          <motion.div
+            animate={{ y: [0, 6, 0] }}
+            transition={{ repeat: Infinity, duration: 1.2 }}
+            className="w-px h-10"
+            style={{ background: 'linear-gradient(to bottom, #C8FF00, transparent)' }}
+          />
         </motion.div>
       </motion.div>
     </section>
