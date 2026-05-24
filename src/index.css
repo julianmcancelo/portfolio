@@ -175,3 +175,14 @@ body::before {
 }
 
 section { position: relative; z-index: 1; }
+
+/* ── FF1/FF2 Window style ─────────────────────────────────── */
+.ff-window {
+  background: #06041A;
+  border: 3px solid #6858D0;
+  box-shadow: 0 0 0 1px #0A0820, 0 0 0 4px #6858D0, inset 0 0 0 1px #0A0820;
+  padding: 16px 20px;
+}
+
+/* ── Pixel image rendering ────────────────────────────────── */
+.pixel { image-rendering: pixelated; shape-rendering: crispEdges; }

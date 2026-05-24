@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
+import { WalkingParty, PixelCrystal } from '../components/PixelSprites'
 
 const ROLES = ['MOBILE DEV', 'WEB DEV', 'SYS ANALYST', 'FLUTTER ENG']
 
@@ -157,11 +158,41 @@ export default function Hero() {
           <a href="#contacto"  className="btn-pixel-outline">INSERT COIN</a>
         </motion.div>
 
+        {/* Walking party */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.8, duration: 0.8 }}
+          className="mt-14 flex items-end gap-2"
+        >
+          {/* FF window frame around party */}
+          <div style={{
+            padding: '12px 20px 10px',
+            background: '#06041A',
+            border: '3px solid #6858D0',
+            boxShadow: '0 0 0 1px #0A0820, 0 0 0 4px #6858D0, inset 0 0 0 1px #0A0820',
+            display: 'inline-flex',
+            alignItems: 'flex-end',
+            gap: 24,
+          }}>
+            <WalkingParty />
+          </div>
+
+          {/* Crystal decoration */}
+          <motion.div
+            animate={{ y: [0, -6, 0] }}
+            transition={{ repeat: Infinity, duration: 3, ease: 'easeInOut' }}
+            style={{ opacity: 0.85, marginBottom: 8 }}
+          >
+            <PixelCrystal scale={4} />
+          </motion.div>
+        </motion.div>
+
         {/* Scroll indicator */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 2.2 }}
+          transition={{ delay: 2.4 }}
           className="absolute bottom-8 left-1/2 -translate-x-1/2 font-pixel text-[7px] text-[#555580] flex flex-col items-center gap-3"
         >
           <span>SCROLL DOWN</span>
